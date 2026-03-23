@@ -87,6 +87,23 @@
   .sub-row{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;background:var(--surface2);border-radius:var(--r-sm);margin-top:6px;margin-bottom:2px}
   .sub-lbl{font-size:.78rem;color:var(--text2)}.sub-val{font-size:.88rem;font-weight:700;color:var(--red)}
 
+  /* PIN LOCK */
+  .pin-screen{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 30px}
+  .pin-logo{font-family:'DM Serif Display',serif;font-size:1.8rem;margin-bottom:6px}
+  .pin-logo span{color:var(--accent)}
+  .pin-sub{font-size:.85rem;color:var(--text2);margin-bottom:48px}
+  .pin-dots{display:flex;gap:16px;margin-bottom:40px}
+  .pin-dot{width:14px;height:14px;border-radius:50%;background:var(--border);transition:background .15s}
+  .pin-dot.filled{background:var(--accent)}
+  .pin-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;width:100%;max-width:280px}
+  .pin-btn{background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:50%;width:72px;height:72px;font-size:1.4rem;font-weight:600;cursor:pointer;margin:0 auto;display:flex;align-items:center;justify-content:center;transition:background .1s;font-family:inherit}
+  .pin-btn:active{background:var(--surface2)}
+  .pin-btn.del{font-size:1.1rem;color:var(--text2)}
+  .pin-btn.empty{visibility:hidden}
+  .pin-error{color:var(--red);font-size:.82rem;margin-top:16px;min-height:20px;text-align:center}
+  .pin-shake{animation:shake .4s ease}
+  @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+
   /* HOLA PAGE */
   .hola-wrap{padding:32px 20px 20px;min-height:60vh;display:flex;flex-direction:column;justify-content:center}
   .hola-greeting{font-family:'DM Serif Display',serif;font-size:2.4rem;line-height:1.15;margin-bottom:6px}
@@ -111,6 +128,33 @@
 </style>
 </head>
 <body>
+<!-- PIN LOCK SCREEN -->
+<div class="pin-screen" id="pin-screen">
+  <div class="pin-logo">Finances <span>Vinyols</span></div>
+  <div class="pin-sub">Introdueix el teu PIN</div>
+  <div class="pin-dots" id="pin-dots">
+    <div class="pin-dot" id="d0"></div>
+    <div class="pin-dot" id="d1"></div>
+    <div class="pin-dot" id="d2"></div>
+    <div class="pin-dot" id="d3"></div>
+  </div>
+  <div class="pin-grid">
+    <button class="pin-btn" onclick="pinPress('1')">1</button>
+    <button class="pin-btn" onclick="pinPress('2')">2</button>
+    <button class="pin-btn" onclick="pinPress('3')">3</button>
+    <button class="pin-btn" onclick="pinPress('4')">4</button>
+    <button class="pin-btn" onclick="pinPress('5')">5</button>
+    <button class="pin-btn" onclick="pinPress('6')">6</button>
+    <button class="pin-btn" onclick="pinPress('7')">7</button>
+    <button class="pin-btn" onclick="pinPress('8')">8</button>
+    <button class="pin-btn" onclick="pinPress('9')">9</button>
+    <button class="pin-btn empty"></button>
+    <button class="pin-btn" onclick="pinPress('0')">0</button>
+    <button class="pin-btn del" onclick="pinDel()">⌫</button>
+  </div>
+  <div class="pin-error" id="pin-error"></div>
+</div>
+
 <div class="topbar">
   <div class="topbar-title">Finances <span>Vinyols</span></div>
   <div style="display:flex;align-items:center;gap:8px">
@@ -392,6 +436,49 @@ function openModal(cat){document.getElementById('m-desc').value='';document.getE
 function closeModal(){document.getElementById('modal').classList.remove('open')}
 function closeOut(e){if(e.target.id==='modal')closeModal()}
 function saveTicket(){const desc=document.getElementById('m-desc').value.trim(),amount=parseFloat(document.getElementById('m-amount').value),date=document.getElementById('m-date').value,cat=document.getElementById('m-cat').value;if(!desc||isNaN(amount)||amount<=0){alert('Omple tots els camps');return}const d=loadM(currentMonth);d.tickets[cat].push({id:Date.now(),desc,amount,date});saveM(currentMonth,d);closeModal();render()}
+// ── PIN LOGIC ────────────────────────────────────────────────────────────────
+const PIN_HASH = '15cfbe902e41e2ffbb43a44546c9e6debc2861082346d2e0052f491b50f67031';
+let pinEntry = '';
+
+async function hashPin(pin) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pin));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+function pinPress(d) {
+  if (pinEntry.length >= 4) return;
+  pinEntry += d;
+  document.getElementById('d'+(pinEntry.length-1)).classList.add('filled');
+  if (pinEntry.length === 4) setTimeout(checkPin, 120);
+}
+
+function pinDel() {
+  if (!pinEntry.length) return;
+  document.getElementById('d'+(pinEntry.length-1)).classList.remove('filled');
+  pinEntry = pinEntry.slice(0,-1);
+  document.getElementById('pin-error').textContent = '';
+}
+
+async function checkPin() {
+  const h = await hashPin(pinEntry);
+  if (h === PIN_HASH) {
+    sessionStorage.setItem('unlocked','1');
+    document.getElementById('pin-screen').style.display = 'none';
+  } else {
+    document.getElementById('pin-error').textContent = 'PIN incorrecte. Torna-ho a intentar.';
+    const dots = document.getElementById('pin-dots');
+    dots.classList.add('pin-shake');
+    setTimeout(()=>dots.classList.remove('pin-shake'), 400);
+    pinEntry = '';
+    [0,1,2,3].forEach(i=>document.getElementById('d'+i).classList.remove('filled'));
+  }
+}
+
+// Check if already unlocked this session
+if (sessionStorage.getItem('unlocked') === '1') {
+  document.getElementById('pin-screen').style.display = 'none';
+}
+
 render();
 document.getElementById('eye-btn').textContent='🙈';
 applyHide();
