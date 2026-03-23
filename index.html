@@ -353,26 +353,50 @@ async function doSync() {
   }
 }
 
-async function loadFromSheets(manual) {
+async function loadFromSheets(manual = false) {
   setSyncStatus('syncing');
+
   try {
-    const url = SCRIPT_URL + '?action=load&secret=' + SECRET;
-    const res = await fetch(url);
-    const allData = await res.json();
-    if (allData && !allData.error && Object.keys(allData).length > 0) {
-      Object.entries(allData).forEach(([m, d]) => {
-        localStorage.setItem(key(parseInt(m)), JSON.stringify(d));
-      });
-      render();
-      setSyncStatus('ok');
-      if (manual) alert('✅ Dades carregades del Google Sheet!');
-    } else {
+    const url = `${SCRIPT_URL}?action=load&secret=${encodeURIComponent(SECRET)}`;
+    const res = await fetch(url, { method: 'GET' });
+
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status} ${res.statusText}`);
+    }
+
+    const text = await res.text();
+    console.log('Resposta load:', text);
+
+    let json;
+    try {
+      json = JSON.parse(text);
+    } catch {
+      throw new Error('La resposta del servidor no és JSON vàlid');
+    }
+
+    const allData = json.data || json;
+
+    if (!allData || allData.error) {
+      throw new Error(allData?.error || 'Resposta amb error');
+    }
+
+    if (Object.keys(allData).length === 0) {
       setSyncStatus('ok');
       if (manual) alert('ℹ️ El Sheet està buit. Les dades locals es mantenen.');
+      return;
     }
+
+    Object.entries(allData).forEach(([m, d]) => {
+      localStorage.setItem(key(parseInt(m, 10)), JSON.stringify(d));
+    });
+
+    render();
+    setSyncStatus('ok');
+    if (manual) alert('✅ Dades carregades del Google Sheet!');
   } catch (err) {
+    console.error('Error carregant del Sheet:', err);
     setSyncStatus('error');
-    if (manual) alert('⚠️ No s\'ha pogut connectar amb el Sheet.');
+    if (manual) alert(`⚠️ No s'ha pogut connectar amb el Sheet.\n${err.message}`);
   }
 }
 
