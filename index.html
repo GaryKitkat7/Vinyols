@@ -330,7 +330,7 @@ let syncTimer = null;
 
 function syncToSheets() {
   clearTimeout(syncTimer);
-  syncTimer = setTimeout(doSync, 2000);
+  doSync();
 }
 
 async function doSync() {
@@ -568,7 +568,10 @@ function rTS(id, tickets) {
 function getGoal() { return parseFloat(localStorage.getItem('vy2_goal')) || 10000; }
 function saveGoal(v) { const g = parseFloat(v); if (!isNaN(g) && g > 0) { localStorage.setItem('vy2_goal', g); render(); } }
 
-function changeMonth(dir) { currentMonth = (currentMonth + dir + 12) % 12; render(); }
+function changeMonth(dir) {
+  currentMonth = (currentMonth + dir + 12) % 12;
+  loadFromSheets(false);
+}
 function showTab(id, el) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
