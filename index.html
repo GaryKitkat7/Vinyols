@@ -338,8 +338,12 @@ async function doSync() {
   try {
     const allData = {};
     for (let m = 0; m < 12; m++) {
-      const r = localStorage.getItem(key(m));
-      if (r) allData[m] = JSON.parse(r);
+      const d = loadM(m);
+      // Només envia mesos que tinguin ingressos o tickets
+      const hasData = (d.aida || d.alex || Object.values(d.base||{}).some(v=>v>0) ||
+        (d.tickets.compra||[]).length || (d.tickets.transport||[]).length ||
+        (d.tickets.neteja||[]).length || (d.tickets.extres||[]).length);
+      if (hasData) allData[m] = d;
     }
     const url = SCRIPT_URL + '?action=save&secret=' + SECRET + '&data=' + encodeURIComponent(JSON.stringify(allData));
     await fetch(url, { method: 'GET', mode: 'no-cors' });
