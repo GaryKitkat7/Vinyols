@@ -346,14 +346,14 @@ function saveM(m,d){localStorage.setItem(key(m),JSON.stringify(d));syncToSheets(
 
 // ── GOOGLE SHEETS SYNC ───────────────────────────────────────────────────────
 // ⚠️ CANVIA AIXÒ per la teva URL de Apps Script un cop desplegat:
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxdTEQSzsEzMCcLQILlo7Tag7KNbp99prisACbnpMdHslYT5KNt5so2Xp-4SOqfGQjvg/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxdTEQSzsEzMCcLQILlo7Tag7KNbp99prisACbnpMdHslYT5KNt5so2Xp-4SOqfGQjvg/exec?action=load&secret=Vinyols2025';
 const SECRET = 'Vinyols2025';
 
 let syncTimer = null;
 let syncStatus = 'idle';
 
 function syncToSheets() {
-  if (SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbyxdTEQSzsEzMCcLQILlo7Tag7KNbp99prisACbnpMdHslYT5KNt5so2Xp-4SOqfGQjvg/exec') return;
+  if (SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbyxdTEQSzsEzMCcLQILlo7Tag7KNbp99prisACbnpMdHslYT5KNt5so2Xp-4SOqfGQjvg/exec?action=load&secret=Vinyols2025') return;
   clearTimeout(syncTimer);
   syncTimer = setTimeout(doSync, 2000);
 }
@@ -375,7 +375,7 @@ async function doSync() {
 }
 
 async function loadFromSheets(manual=true) {
-  if (SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbyxdTEQSzsEzMCcLQILlo7Tag7KNbp99prisACbnpMdHslYT5KNt5so2Xp-4SOqfGQjvg/exec') return;
+  if (SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbyxdTEQSzsEzMCcLQILlo7Tag7KNbp99prisACbnpMdHslYT5KNt5so2Xp-4SOqfGQjvg/exec?action=load&secret=Vinyols2025') return;
   setSyncStatus('syncing');
   try {
     const url = `${SCRIPT_URL}?action=load&secret=${SECRET}`;
