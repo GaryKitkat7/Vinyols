@@ -251,8 +251,15 @@
       <span class="cvg" style="font-size:1.3rem;font-weight:700" id="a-pct">0%</span>
     </div>
     <div class="pb" style="height:10px"><div class="pf pf-g" id="a-bar" style="width:0%"></div></div>
-    <div style="display:flex;justify-content:space-between;font-size:.78rem;color:var(--text2);margin-top:8px">
-      <span id="a-saved">—</span><span>Objectiu: 10.000 €</span>
+    <div style="display:flex;justify-content:space-between;align-items:center;font-size:.78rem;color:var(--text2);margin-top:10px">
+      <span id="a-saved">—</span>
+      <div style="display:flex;align-items:center;gap:6px">
+        <span>Objectiu:</span>
+        <input id="a-goal-input" type="number" min="0" step="100"
+          style="width:90px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px;color:var(--accent);font-size:.82rem;font-weight:700;text-align:right;font-family:inherit"
+          oninput="saveGoal(this.value)">
+        <span>€</span>
+      </div>
     </div>
   </div>
   <div id="a-list"></div>
@@ -309,9 +316,22 @@ const MARC_DATA = {
   }
 };
 
-function emptyMonth() {
-  const b={};FIXES_BASE.forEach(f=>b[f.id]=0);b.lloguer=820;b.telefon=82.95;b.seguros=3.87;
-  return {aida:0,alex:0,pct:0.35,base:b,tickets:{compra:[],transport:[],neteja:[],extres:[]}};
+function getLastIncome(m) {
+  // Busca el mes anterior més proper amb ingressos guardats
+  for (let i = m-1; i >= 0; i--) {
+    const r = localStorage.getItem(key(i));
+    if (r) { const d = JSON.parse(r); if (d.aida || d.alex) return {aida:d.aida||0, alex:d.alex||0, pct:d.pct||0.35}; }
+    if (i === 2) return {aida:MARC_DATA.aida, alex:MARC_DATA.alex, pct:MARC_DATA.pct};
+  }
+  return {aida:0, alex:0, pct:0.35};
+}
+
+function emptyMonth(m) {
+  const b = {};
+  FIXES_BASE.forEach(f => b[f.id] = 0);
+  const ing = getLastIncome(m);
+  // Fixes a 0, tickets a 0, ingressos heretats
+  return {aida:ing.aida, alex:ing.alex, pct:ing.pct, base:b, tickets:{compra:[],transport:[],neteja:[],extres:[]}};
 }
 
 let currentMonth=new Date().getMonth();
@@ -320,20 +340,20 @@ function loadM(m){
   const r=localStorage.getItem(key(m));
   if(r) return JSON.parse(r);
   if(m===2) return JSON.parse(JSON.stringify(MARC_DATA)); // Març
-  return emptyMonth();
+  return emptyMonth(m);
 }
 function saveM(m,d){localStorage.setItem(key(m),JSON.stringify(d));syncToSheets();}
 
 // ── GOOGLE SHEETS SYNC ───────────────────────────────────────────────────────
 // ⚠️ CANVIA AIXÒ per la teva URL de Apps Script un cop desplegat:
-const SCRIPT_URL = 'POSA_AQUI_LA_TEVA_URL';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxdTEQSzsEzMCcLQILlo7Tag7KNbp99prisACbnpMdHslYT5KNt5so2Xp-4SOqfGQjvg/exec';
 const SECRET = 'Vinyols2025';
 
 let syncTimer = null;
 let syncStatus = 'idle';
 
 function syncToSheets() {
-  if (SCRIPT_URL === 'POSA_AQUI_LA_TEVA_URL') return;
+  if (SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbyxdTEQSzsEzMCcLQILlo7Tag7KNbp99prisACbnpMdHslYT5KNt5so2Xp-4SOqfGQjvg/exec') return;
   clearTimeout(syncTimer);
   syncTimer = setTimeout(doSync, 2000);
 }
@@ -355,7 +375,7 @@ async function doSync() {
 }
 
 async function loadFromSheets(manual=true) {
-  if (SCRIPT_URL === 'POSA_AQUI_LA_TEVA_URL') return;
+  if (SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbyxdTEQSzsEzMCcLQILlo7Tag7KNbp99prisACbnpMdHslYT5KNt5so2Xp-4SOqfGQjvg/exec') return;
   setSyncStatus('syncing');
   try {
     const url = `${SCRIPT_URL}?action=load&secret=${SECRET}`;
@@ -404,10 +424,10 @@ function render(){
   document.getElementById('monthLabel').textContent=MONTHS_FULL[currentMonth];
 
   // RESUM
-  document.getElementById('r-ing').textContent=fmt(s.ing);
+  setNumHide('r-ing', fmt(s.ing));
   document.getElementById('r-ing-sub').textContent=`${MONTHS_FULL[currentMonth]} ${new Date().getFullYear()}`;
-  document.getElementById('r-gas').textContent=fmt(s.gas);
-  document.getElementById('r-sob').textContent=fmt(s.sob);
+  setNumHide('r-gas', fmt(s.gas));
+  setNumHide('r-sob', fmt(s.sob));
   document.getElementById('r-pct').textContent=s.pctG.toFixed(0)+'%';
   const bar=document.getElementById('r-bar');bar.style.width=s.pctG+'%';bar.className='pf '+(s.pctG>100?'pf-r':s.pctG>80?'pf-o':'pf-g');
   const badge=document.getElementById('r-badge');badge.textContent=s.sob>=0?'✓ Positiu':'✗ Negatiu';badge.className='badge '+(s.sob>=0?'bg':'br');
@@ -423,17 +443,46 @@ function render(){
   document.getElementById('f-base-list').innerHTML=FIXES_BASE.map(f=>`<div class="fix-row"><div class="fl"><div class="ficon">${f.icon}</div><div class="fn">${f.label}</div></div><input class="fix-input num-hide" type="number" value="${(d.base[f.id]||0).toFixed(2)}" oninput="updF('${f.id}',this.value)" step="0.01"></div>`).join('');
   document.getElementById('f-ticket-totals').innerHTML=`<div class="fix-row"><div class="fl"><div class="ficon">🛒</div><div><div class="fn">Compra</div><div class="fsub">${(d.tickets.compra||[]).length} tickets</div></div></div><div class="fix-total num-hide">${fmt(s.tc)}</div></div><div class="fix-row"><div class="fl"><div class="ficon">🚗</div><div><div class="fn">Transport</div><div class="fsub">${(d.tickets.transport||[]).length} tickets</div></div></div><div class="fix-total num-hide">${fmt(s.tt)}</div></div><div class="fix-row"><div class="fl"><div class="ficon">🧹</div><div><div class="fn">Neteja</div><div class="fsub">${(d.tickets.neteja||[]).length} tickets</div></div></div><div class="fix-total num-hide">${fmt(s.tn)}</div></div><div class="fix-row"><div class="fl"><div class="ficon">⚡</div><div><div class="fn">Gastos Extres</div><div class="fsub">${(d.tickets.extres||[]).length} tickets</div></div></div><div class="fix-total num-hide">${fmt(s.te)}</div></div><div class="fix-row" style="margin-top:10px;border:1px solid rgba(245,90,90,.4);background:rgba(245,90,90,.06)"><div class="fl"><div class="ficon">📊</div><div class="fn" style="font-weight:700">TOTAL GASTOS FIXES</div></div><div class="fix-total num-hide" style="font-size:1rem">${fmt(s.gas)}</div></div>`;
   document.getElementById('f-total').textContent=fmt(s.gas);
+  document.getElementById('f-total')._realText=fmt(s.gas);
   // INGRESSOS
   document.getElementById('i-aida').value=d.aida||'';document.getElementById('i-alex').value=d.alex||'';
-  document.getElementById('i-aida-v').textContent=fmt(s.a);document.getElementById('i-alex-v').textContent=fmt(s.x);
-  document.getElementById('i-com').textContent=fmt(s.ing);
+  setNumHide('i-aida-v', fmt(s.a));
+  setNumHide('i-alex-v', fmt(s.x));
+  setNumHide('i-com', fmt(s.ing));
   const pctInput=document.getElementById('i-pct');if(document.activeElement!==pctInput)pctInput.value=(s.pct*100).toFixed(1);
   // ANUAL
-  const AN={0:0,1:0,2:568.05,3:645.35,4:409.59,5:317.33,6:230.66,7:843.93,8:159.79,9:255.86,10:1026.17,11:1079.96};
-  const tot=Object.values(AN).reduce((a,b)=>a+b,0),gp=Math.min(100,(tot/10000)*100);
-  document.getElementById('a-pct').textContent=gp.toFixed(0)+'%';document.getElementById('a-bar').style.width=gp+'%';
-  document.getElementById('a-saved').textContent=`Estalviat: ${fmt(tot)}`;
-  document.getElementById('a-list').innerHTML=MONTHS_FULL.map((m,i)=>{const v=AN[i];return`<div class="annual-row${i===currentMonth?' current':''}"><div class="annual-month">${m}${i===currentMonth?' ◀':''}</div><div class="annual-val ${v>0?'cvg':v<0?'cvr':''}">${v>0?'+':''}${fmt(v)}</div></div>`}).join('');
+  // ANUAL — calcula des de les dades reals de cada mes
+  const todayMonth = new Date().getMonth(); // mes actual (0-based)
+  let totalSobrant = 0;
+  const annualRows = MONTHS_FULL.map((m, i) => {
+    if (i > todayMonth) {
+      // Mes futur → desactivat
+      return `<div class="annual-row" style="opacity:.35">
+        <div class="annual-month">${m}</div>
+        <div class="annual-val" style="color:var(--text3)">—</div>
+      </div>`;
+    }
+    // Mes passat o actual → calcula des de les dades
+    const md = loadM(i);
+    const sc = comp(md);
+    totalSobrant += sc.sob;
+    const cls = sc.sob > 0 ? 'cvg' : sc.sob < 0 ? 'cvr' : '';
+    const sign = sc.sob > 0 ? '+' : '';
+    const isCurrent = i === currentMonth;
+    return `<div class="annual-row${isCurrent?' current':''}">
+      <div class="annual-month">${m}${isCurrent?' ◀':''}</div>
+      <div class="annual-val num-hide ${cls}">${sign}${fmt(sc.sob)}</div>
+    </div>`;
+  }).join('');
+
+  const goal = getGoal();
+  const goalPct = goal > 0 ? Math.min(100, (totalSobrant / goal) * 100) : 0;
+  document.getElementById('a-pct').textContent = goalPct.toFixed(0) + '%';
+  document.getElementById('a-bar').style.width = goalPct + '%';
+  document.getElementById('a-saved').textContent = `Estalviat: ${fmt(totalSobrant)}`;
+  document.getElementById('a-list').innerHTML = annualRows;
+  const gi = document.getElementById('a-goal-input');
+  if (document.activeElement !== gi) gi.value = goal;
   // apply hide state after every render
   setTimeout(applyHide,0);
 }
@@ -442,6 +491,9 @@ function rTS(id,tickets){
   const tot=(tickets||[]).reduce((s,e)=>s+(parseFloat(e.amount)||0),0);
   document.getElementById(id).innerHTML=tickets&&tickets.length?tickets.map(e=>`<div class="ri"><div><div class="rn">${e.desc}</div><div class="rs">${e.date||''}</div></div><div style="display:flex;align-items:center"><div class="ra ra-neg num-hide">${fmt(parseFloat(e.amount))}</div><button class="del-btn" onclick="delT(${e.id})">✕</button></div></div>`).join('')+`<div class="sub-row"><span class="sub-lbl">Total ${MONTHS[currentMonth]}</span><span class="sub-val num-hide">${fmt(tot)}</span></div>`:'<div class="empty"><div class="empty-icon">✅</div>Sense moviments</div>';
 }
+
+function getGoal() { return parseFloat(localStorage.getItem('vy2_goal')) || 10000; }
+function saveGoal(v) { const g = parseFloat(v); if (!isNaN(g) && g > 0) { localStorage.setItem('vy2_goal', g); render(); } }
 
 function changeMonth(dir){currentMonth=(currentMonth+dir+12)%12;render()}
 function goResum(){
@@ -463,15 +515,22 @@ function applyHide(){
   document.querySelectorAll('.num-hide').forEach(el=>{
     const isInput = el.tagName==='INPUT';
     if(numbersHidden){
-      el.classList.add('hidden-val');
-      if(isInput){el._realVal=el.value;el.type='password';}
-      else{el._realText=el.textContent||el._realText;el.textContent='';}
+      // Guarda el valor actual SEMPRE (pot haver canviat)
+      if(isInput){ el._realVal=el.value; el.type='password'; }
+      else{ if(el.textContent) el._realText=el.textContent; el.classList.add('hidden-val'); el.textContent=''; }
     } else {
-      el.classList.remove('hidden-val');
-      if(isInput){el.type='number';if(el._realVal!==undefined)el.value=el._realVal;}
-      else{if(el._realText)el.textContent=el._realText;}
+      if(isInput){ el.type='number'; if(el._realVal!==undefined) el.value=el._realVal; }
+      else{ el.classList.remove('hidden-val'); if(el._realText) el.textContent=el._realText; }
     }
   });
+}
+
+// Funció per actualitzar un element num-hide correctament
+function setNumHide(id, val) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el._realText = val;
+  if (!numbersHidden) el.textContent = val;
 }
 // Wrap fmt to update hidden elements properly
 const _origRender = render;
@@ -547,6 +606,7 @@ function enterApp(hidden) {
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-resum').classList.add('active');
   document.querySelectorAll('#main-tabs .tab').forEach((t,i)=>t.classList.toggle('active',i===0));
+  render(); // re-render ara que l'app és visible
   applyHide();
 }
 
