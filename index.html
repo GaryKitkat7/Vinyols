@@ -330,7 +330,7 @@ let syncTimer = null;
 
 function syncToSheets() {
   clearTimeout(syncTimer);
-  doSync();
+  syncTimer = setTimeout(doSync, 2000);
 }
 
 async function doSync() {
