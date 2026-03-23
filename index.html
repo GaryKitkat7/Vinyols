@@ -167,6 +167,7 @@
 <div class="topbar">
   <div class="topbar-title">Finances <span>Vinyols</span></div>
   <div style="display:flex;align-items:center;gap:8px">
+    <button class="eye-btn" id="sync-btn" onclick="loadFromSheets()" title="Sincronitzar">☁️</button>
     <button class="eye-btn" id="eye-btn" onclick="toggleHide()" title="Mostrar/amagar xifres">👁</button>
     <div class="month-nav">
       <button class="month-btn" onclick="changeMonth(-1)">‹</button>
@@ -312,8 +313,67 @@ const EXCEL={
 
 let currentMonth=new Date().getMonth();
 function key(m){return`vy2_m${m}`}
-function loadM(m){const r=localStorage.getItem(key(m));if(r)return JSON.parse(r);const e=EXCEL[m];if(e)return JSON.parse(JSON.stringify(e));const b={};FIXES_BASE.forEach(f=>b[f.id]=0);b.lloguer=820;b.parking=100;b.telefon=82.95;b.seguros=3.87;return{aida:900,alex:1184,pct:0.35,base:b,tickets:{compra:[],transport:[],neteja:[],extres:[]}}}
-function saveM(m,d){localStorage.setItem(key(m),JSON.stringify(d))}
+function loadM(m){const r=localStorage.getItem(key(m));if(r)return JSON.parse(r);const e=EXCEL[m];if(e)return JSON.parse(JSON.stringify(e));const b={};FIXES_BASE.forEach(f=>b[f.id]=0);b.lloguer=820;b.telefon=82.95;b.seguros=3.87;return{aida:900,alex:1184,pct:0.35,base:b,tickets:{compra:[],transport:[],neteja:[],extres:[]}}}
+function saveM(m,d){localStorage.setItem(key(m),JSON.stringify(d));syncToSheets();}
+
+// ── GOOGLE SHEETS SYNC ───────────────────────────────────────────────────────
+// ⚠️ CANVIA AIXÒ per la teva URL de Apps Script un cop desplegat:
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxJQ9QGFJQQ_JtojYQQOVJqK5GzB49X6YcZeARUK-TODhOmf8cai6g4lyvxW0m8tugTxA/exec';
+const SECRET = 'Vinyols2025';
+
+let syncTimer = null;
+let syncStatus = 'idle';
+
+function syncToSheets() {
+  if (SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbxJQ9QGFJQQ_JtojYQQOVJqK5GzB49X6YcZeARUK-TODhOmf8cai6g4lyvxW0m8tugTxA/exec') return;
+  clearTimeout(syncTimer);
+  syncTimer = setTimeout(doSync, 2000);
+}
+
+async function doSync() {
+  setSyncStatus('syncing');
+  try {
+    const allData = {};
+    for (let m = 0; m < 12; m++) {
+      const r = localStorage.getItem(key(m));
+      if (r) allData[m] = JSON.parse(r);
+    }
+    const url = `${SCRIPT_URL}?action=save&secret=${SECRET}&data=${encodeURIComponent(JSON.stringify(allData))}`;
+    await fetch(url, { method: 'GET', mode: 'no-cors' });
+    setSyncStatus('ok');
+  } catch (err) {
+    setSyncStatus('error');
+  }
+}
+
+async function loadFromSheets() {
+  if (SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbxJQ9QGFJQQ_JtojYQQOVJqK5GzB49X6YcZeARUK-TODhOmf8cai6g4lyvxW0m8tugTxA/exec') return;
+  setSyncStatus('syncing');
+  try {
+    const url = `${SCRIPT_URL}?action=load&secret=${SECRET}`;
+    const res = await fetch(url);
+    const allData = await res.json();
+    if (allData && !allData.error) {
+      Object.entries(allData).forEach(([m, d]) => {
+        localStorage.setItem(key(parseInt(m)), JSON.stringify(d));
+      });
+      render();
+      setSyncStatus('ok');
+    }
+  } catch (err) {
+    setSyncStatus('error');
+  }
+}
+
+function setSyncStatus(status) {
+  syncStatus = status;
+  const el = document.getElementById('sync-btn');
+  if (!el) return;
+  if (status === 'syncing') { el.textContent = '⏳'; el.title = 'Sincronitzant...'; }
+  else if (status === 'ok')  { el.textContent = '☁️'; el.title = 'Sincronitzat'; }
+  else if (status === 'error') { el.textContent = '⚠️'; el.title = 'Error de sincronització'; }
+  else { el.textContent = '☁️'; el.title = 'Sincronitzar ara'; }
+}
 function comp(d){
   const a=parseFloat(d.aida)||0,x=parseFloat(d.alex)||0,nom=a+x,pct=parseFloat(d.pct)||0.35,ing=nom*pct;
   const base=Object.values(d.base||{}).reduce((s,v)=>s+(parseFloat(v)||0),0);
@@ -489,3 +549,4 @@ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
 </script>
 </body>
 </html>
+
