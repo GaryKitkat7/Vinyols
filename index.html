@@ -57,9 +57,6 @@
   .ing-value{font-size:1.25rem;font-weight:600;color:var(--accent2)}
   .ing-input{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:6px 8px;color:var(--text);font-size:.95rem;font-family:inherit;font-weight:600;margin-top:6px}
   .ing-input:focus{outline:none;border-color:var(--accent2)}
-  .pct-row{display:flex;gap:8px;margin-bottom:14px}
-  .pct-pill{flex:1;padding:10px;border-radius:10px;text-align:center;background:var(--surface2);border:2px solid var(--border);cursor:pointer;font-size:.85rem;font-weight:600;transition:all .15s}
-  .pct-pill.active{border-color:var(--accent);color:var(--accent);background:rgba(200,245,90,.08)}
   .annual-row{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;background:var(--surface);border-radius:var(--r-sm);margin-bottom:6px;border:1px solid var(--border)}
   .annual-row.current{border-color:var(--accent);background:rgba(200,245,90,.06)}
   .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;align-items:flex-end;justify-content:center}
@@ -82,15 +79,11 @@
   .bg{background:rgba(200,245,90,.15);color:var(--accent)}.br{background:rgba(245,90,90,.15);color:var(--red)}
   .empty{text-align:center;padding:32px 20px;color:var(--text3);font-size:.88rem}
   .empty-icon{font-size:2rem;margin-bottom:8px}
-  .divider{height:1px;background:var(--border);margin:8px 0}
-  .content{padding-bottom:20px}
   .sub-row{display:flex;justify-content:space-between;align-items:center;padding:9px 14px;background:var(--surface2);border-radius:var(--r-sm);margin-top:6px;margin-bottom:2px}
   .sub-lbl{font-size:.78rem;color:var(--text2)}.sub-val{font-size:.88rem;font-weight:700;color:var(--red)}
-
-  /* PIN LOCK */
+  .content{padding-bottom:20px}
+  /* PIN */
   .pin-screen{position:fixed;inset:0;background:var(--bg);z-index:999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 30px}
-  .pin-logo{font-family:'DM Serif Display',serif;font-size:1.8rem;margin-bottom:6px}
-  .pin-logo span{color:var(--accent)}
   .pin-sub{font-size:.85rem;color:var(--text2);margin-bottom:48px}
   .pin-dots{display:flex;gap:16px;margin-bottom:40px}
   .pin-dot{width:14px;height:14px;border-radius:50%;background:var(--border);transition:background .15s}
@@ -103,43 +96,29 @@
   .pin-error{color:var(--red);font-size:.82rem;margin-top:16px;min-height:20px;text-align:center}
   .pin-shake{animation:shake .4s ease}
   @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
-
-  /* HOLA PAGE */
-  .hola-wrap{padding:32px 20px 20px;min-height:60vh;display:flex;flex-direction:column;justify-content:center}
+  /* HOLA */
   .hola-greeting{font-family:'DM Serif Display',serif;font-size:2.4rem;line-height:1.15;margin-bottom:6px}
   .hola-greeting .wave{display:inline-block;animation:wave 2s infinite}
   @keyframes wave{0%,100%{transform:rotate(0deg)}20%{transform:rotate(20deg)}40%{transform:rotate(-10deg)}60%{transform:rotate(15deg)}80%{transform:rotate(-5deg)}}
   .hola-name{color:var(--accent)}
-  .hola-sub{font-size:1rem;color:var(--text2);margin-bottom:40px}
-  .hola-cards{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:28px}
-  .hola-card{background:var(--surface);border-radius:var(--radius);padding:18px;border:1px solid var(--border);cursor:pointer;transition:border-color .2s}
-  .hola-card:hover{border-color:var(--accent)}
-  .hola-card-icon{font-size:1.6rem;margin-bottom:8px}
-  .hola-card-label{font-size:.75rem;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
-  .hola-card-val{font-size:1.15rem;font-weight:700}
-  .hola-enter{width:100%;background:var(--accent);color:#000;border:none;padding:16px;border-radius:14px;font-size:1rem;font-weight:700;cursor:pointer;font-family:inherit;letter-spacing:.02em;transition:opacity .15s}
-  .hola-enter:hover{opacity:.85}
-  .hola-month{font-size:.8rem;color:var(--text3);text-align:center;margin-top:16px}
-
-  /* HIDE NUMBERS */
+  /* HIDE */
   .hidden-val::before{content:'••••••';letter-spacing:.15em;color:var(--text3);font-size:.9rem}
   .eye-btn{background:none;border:none;color:var(--text3);cursor:pointer;font-size:1rem;padding:4px;transition:color .15s;margin-left:6px}
   .eye-btn:hover{color:var(--text)}
 </style>
 </head>
 <body>
+
 <!-- PANTALLA D'ENTRADA -->
 <div class="pin-screen" id="pin-screen">
   <div class="hola-greeting" style="margin-bottom:4px"><span class="wave">👋</span> Hola,<br><span class="hola-name">Alex</span></div>
   <div class="pin-sub" id="hola-date">—</div>
-
   <div class="pin-dots" id="pin-dots">
     <div class="pin-dot" id="d0"></div>
     <div class="pin-dot" id="d1"></div>
     <div class="pin-dot" id="d2"></div>
     <div class="pin-dot" id="d3"></div>
   </div>
-
   <div class="pin-grid">
     <button class="pin-btn" onclick="pinPress('1')">1</button>
     <button class="pin-btn" onclick="pinPress('2')">2</button>
@@ -154,10 +133,7 @@
     <button class="pin-btn" onclick="pinPress('0')">0</button>
     <button class="pin-btn del" onclick="pinDel()">⌫</button>
   </div>
-
   <div class="pin-error" id="pin-error"></div>
-
-  <!-- Selector visibilitat -->
   <div style="display:flex;gap:10px;margin-top:24px;width:100%;max-width:280px">
     <button id="vis-ocult" onclick="setVis(true)" style="flex:1;padding:12px 8px;border-radius:10px;font-family:inherit;font-size:.82rem;font-weight:600;cursor:pointer;border:2px solid var(--accent);background:rgba(200,245,90,.1);color:var(--accent)">🙈 Ocults</button>
     <button id="vis-visible" onclick="setVis(false)" style="flex:1;padding:12px 8px;border-radius:10px;font-family:inherit;font-size:.82rem;font-weight:600;cursor:pointer;border:2px solid var(--border);background:var(--surface);color:var(--text2)">👁 Visibles</button>
@@ -167,7 +143,7 @@
 <div class="topbar">
   <div class="topbar-title">Finances <span>Vinyols</span></div>
   <div style="display:flex;align-items:center;gap:8px">
-    <button class="eye-btn" id="sync-btn" onclick="loadFromSheets()" title="Sincronitzar">☁️</button>
+    <button class="eye-btn" id="sync-btn" onclick="loadFromSheets(true)" title="Sincronitzar">☁️</button>
     <button class="eye-btn" id="eye-btn" onclick="toggleHide()" title="Mostrar/amagar xifres">👁</button>
     <div class="month-nav">
       <button class="month-btn" onclick="changeMonth(-1)">‹</button>
@@ -176,6 +152,7 @@
     </div>
   </div>
 </div>
+
 <div class="tabs" id="main-tabs" style="display:none">
   <button class="tab active" onclick="showTab('resum',this)">Resum</button>
   <button class="tab" onclick="showTab('tickets',this)">Tickets</button>
@@ -183,6 +160,7 @@
   <button class="tab" onclick="showTab('ingressos',this)">Ingressos</button>
   <button class="tab" onclick="showTab('anual',this)">Anual</button>
 </div>
+
 <div class="content">
 
 <!-- RESUM -->
@@ -302,9 +280,7 @@ const FIXES_BASE=[
   {id:'impostos',label:'Impostos / Taxes',icon:'📋'},
   {id:'altres',label:'Altres',icon:'📦'},
 ];
-const PCTS=[{val:0.35,label:'35%',note:'Base IRPF'},{val:0.50,label:'50%',note:'Nòmines'},{val:0.60,label:'60%',note:'Especial'}];
 
-// Només Març té dades reals. La resta s'ompliran amb l'ús o es carreguen del Sheet.
 const MARC_DATA = {
   aida:1738,alex:2457,pct:0.60,
   base:{lloguer:279.45,telefon:0,llum:0,gas:0,aigua:0,seguros:136.08,cuotes:0,impostos:0,altres:0},
@@ -316,8 +292,11 @@ const MARC_DATA = {
   }
 };
 
+// ── STORAGE ──────────────────────────────────────────────────────────────────
+let currentMonth = new Date().getMonth();
+function key(m){ return 'vy2_m'+m; }
+
 function getLastIncome(m) {
-  // Busca el mes anterior més proper amb ingressos guardats
   for (let i = m-1; i >= 0; i--) {
     const r = localStorage.getItem(key(i));
     if (r) { const d = JSON.parse(r); if (d.aida || d.alex) return {aida:d.aida||0, alex:d.alex||0, pct:d.pct||0.35}; }
@@ -327,33 +306,29 @@ function getLastIncome(m) {
 }
 
 function emptyMonth(m) {
-  const b = {};
-  FIXES_BASE.forEach(f => b[f.id] = 0);
+  const b = {}; FIXES_BASE.forEach(f => b[f.id] = 0);
   const ing = getLastIncome(m);
-  // Fixes a 0, tickets a 0, ingressos heretats
   return {aida:ing.aida, alex:ing.alex, pct:ing.pct, base:b, tickets:{compra:[],transport:[],neteja:[],extres:[]}};
 }
 
-let currentMonth=new Date().getMonth();
-function key(m){return`vy2_m${m}`}
-function loadM(m){
-  const r=localStorage.getItem(key(m));
-  if(r) return JSON.parse(r);
-  if(m===2) return JSON.parse(JSON.stringify(MARC_DATA)); // Març
+function loadM(m) {
+  const r = localStorage.getItem(key(m));
+  if (r) return JSON.parse(r);
+  if (m === 2) return JSON.parse(JSON.stringify(MARC_DATA));
   return emptyMonth(m);
 }
-function saveM(m,d){localStorage.setItem(key(m),JSON.stringify(d));syncToSheets();}
+
+function saveM(m, d) {
+  localStorage.setItem(key(m), JSON.stringify(d));
+  syncToSheets();
+}
 
 // ── GOOGLE SHEETS SYNC ───────────────────────────────────────────────────────
-// ⚠️ CANVIA AIXÒ per la teva URL de Apps Script un cop desplegat:
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxdTEQSzsEzMCcLQILlo7Tag7KNbp99prisACbnpMdHslYT5KNt5so2Xp-4SOqfGQjvg/exec?action=load&secret=Vinyols2025';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxdTEQSzsEzMCcLQILlo7Tag7KNbp99prisACbnpMdHslYT5KNt5so2Xp-4SOqfGQjvg/exec';
 const SECRET = 'Vinyols2025';
-
 let syncTimer = null;
-let syncStatus = 'idle';
 
 function syncToSheets() {
-  if (SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbyxdTEQSzsEzMCcLQILlo7Tag7KNbp99prisACbnpMdHslYT5KNt5so2Xp-4SOqfGQjvg/exec?action=load&secret=Vinyols2025') return;
   clearTimeout(syncTimer);
   syncTimer = setTimeout(doSync, 2000);
 }
@@ -366,7 +341,7 @@ async function doSync() {
       const r = localStorage.getItem(key(m));
       if (r) allData[m] = JSON.parse(r);
     }
-    const url = `${SCRIPT_URL}?action=save&secret=${SECRET}&data=${encodeURIComponent(JSON.stringify(allData))}`;
+    const url = SCRIPT_URL + '?action=save&secret=' + SECRET + '&data=' + encodeURIComponent(JSON.stringify(allData));
     await fetch(url, { method: 'GET', mode: 'no-cors' });
     setSyncStatus('ok');
   } catch (err) {
@@ -374,11 +349,10 @@ async function doSync() {
   }
 }
 
-async function loadFromSheets(manual=true) {
-  if (SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbyxdTEQSzsEzMCcLQILlo7Tag7KNbp99prisACbnpMdHslYT5KNt5so2Xp-4SOqfGQjvg/exec?action=load&secret=Vinyols2025') return;
+async function loadFromSheets(manual) {
   setSyncStatus('syncing');
   try {
-    const url = `${SCRIPT_URL}?action=load&secret=${SECRET}`;
+    const url = SCRIPT_URL + '?action=load&secret=' + SECRET;
     const res = await fetch(url);
     const allData = await res.json();
     if (allData && !allData.error && Object.keys(allData).length > 0) {
@@ -394,163 +368,195 @@ async function loadFromSheets(manual=true) {
     }
   } catch (err) {
     setSyncStatus('error');
-    if (manual) alert('⚠️ No s\'ha pogut connectar amb el Sheet. Comprova la connexió.');
+    if (manual) alert('⚠️ No s\'ha pogut connectar amb el Sheet.');
   }
 }
 
 function setSyncStatus(status) {
-  syncStatus = status;
   const el = document.getElementById('sync-btn');
   if (!el) return;
   if (status === 'syncing') { el.textContent = '⏳'; el.title = 'Sincronitzant...'; }
-  else if (status === 'ok')  { el.textContent = '☁️'; el.title = 'Sincronitzat'; }
-  else if (status === 'error') { el.textContent = '⚠️'; el.title = 'Error de sincronització'; }
-  else { el.textContent = '☁️'; el.title = 'Sincronitzar ara'; }
+  else if (status === 'ok') { el.textContent = '☁️'; el.title = 'Sincronitzat'; }
+  else { el.textContent = '⚠️'; el.title = 'Error de sincronització'; }
 }
-function comp(d){
-  const a=parseFloat(d.aida)||0,x=parseFloat(d.alex)||0,nom=a+x,pct=parseFloat(d.pct)||0.35,ing=nom*pct;
+
+// ── COMPUTE ───────────────────────────────────────────────────────────────────
+function comp(d) {
+  const a=parseFloat(d.aida)||0, x=parseFloat(d.alex)||0, nom=a+x, pct=parseFloat(d.pct)||0.35, ing=nom*pct;
   const base=Object.values(d.base||{}).reduce((s,v)=>s+(parseFloat(v)||0),0);
   const tc=(d.tickets.compra||[]).reduce((s,e)=>s+(parseFloat(e.amount)||0),0);
   const tt=(d.tickets.transport||[]).reduce((s,e)=>s+(parseFloat(e.amount)||0),0);
   const tn=(d.tickets.neteja||[]).reduce((s,e)=>s+(parseFloat(e.amount)||0),0);
   const te=(d.tickets.extres||[]).reduce((s,e)=>s+(parseFloat(e.amount)||0),0);
-  const gas=base+tc+tt+tn+te,sob=ing-gas,pctG=ing>0?Math.min(100,(gas/ing)*100):0;
-  return{a,x,nom,pct,ing,base,tc,tt,tn,te,gas,sob,pctG}
-}
-function fmt(n){if(n===null||isNaN(n))return'—';return n.toLocaleString('ca-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €'}
-
-function render(){
-  const d=loadM(currentMonth),s=comp(d);
-  document.getElementById('monthLabel').textContent=MONTHS_FULL[currentMonth];
-
-  // RESUM
-  setNumHide('r-ing', fmt(s.ing));
-  document.getElementById('r-ing-sub').textContent=`${MONTHS_FULL[currentMonth]} ${new Date().getFullYear()}`;
-  setNumHide('r-gas', fmt(s.gas));
-  setNumHide('r-sob', fmt(s.sob));
-  document.getElementById('r-pct').textContent=s.pctG.toFixed(0)+'%';
-  const bar=document.getElementById('r-bar');bar.style.width=s.pctG+'%';bar.className='pf '+(s.pctG>100?'pf-r':s.pctG>80?'pf-o':'pf-g');
-  const badge=document.getElementById('r-badge');badge.textContent=s.sob>=0?'✓ Positiu':'✗ Negatiu';badge.className='badge '+(s.sob>=0?'bg':'br');
-  // Breakdown
-  const bkd=[[' Base (lloguer,llum…)',s.base],['🛒 Compra',s.tc],['🚗 Transport',s.tt],['🧹 Neteja',s.tn],['⚡ Extres',s.te]].filter(([,v])=>v>0);
-  document.getElementById('r-breakdown').innerHTML=bkd.map(([l,v])=>`<div class="ri"><div class="rn">${l}</div><div class="ra ra-neg num-hide">${fmt(v)}</div></div>`).join('')||'<div class="empty"><div class="empty-icon">📊</div>Sense dades</div>';
-  // Recent
-  const all=[...(d.tickets.compra||[]).map(e=>({...e,cat:'🛒'})),...(d.tickets.transport||[]).map(e=>({...e,cat:'🚗'})),...(d.tickets.neteja||[]).map(e=>({...e,cat:'🧹'})),...(d.tickets.extres||[]).map(e=>({...e,cat:'⚡'}))].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,10);
-  document.getElementById('r-recent').innerHTML=all.map(e=>`<div class="ri"><div class="rl"><div class="ricon">${e.cat}</div><div><div class="rn">${e.desc}</div><div class="rs">${e.date}</div></div></div><div style="display:flex;align-items:center"><div class="ra ra-neg num-hide">${fmt(parseFloat(e.amount))}</div><button class="del-btn" onclick="delT(${e.id})">✕</button></div></div>`).join('')||'<div class="empty"><div class="empty-icon">🧾</div>Cap moviment</div>';
-  // TICKETS
-  rTS('t-compra',d.tickets.compra);rTS('t-transport',d.tickets.transport);rTS('t-neteja',d.tickets.neteja);rTS('t-extres',d.tickets.extres);
-  // FIXES
-  document.getElementById('f-base-list').innerHTML=FIXES_BASE.map(f=>`<div class="fix-row"><div class="fl"><div class="ficon">${f.icon}</div><div class="fn">${f.label}</div></div><input class="fix-input num-hide" type="number" value="${(d.base[f.id]||0).toFixed(2)}" oninput="updF('${f.id}',this.value)" step="0.01"></div>`).join('');
-  document.getElementById('f-ticket-totals').innerHTML=`<div class="fix-row"><div class="fl"><div class="ficon">🛒</div><div><div class="fn">Compra</div><div class="fsub">${(d.tickets.compra||[]).length} tickets</div></div></div><div class="fix-total num-hide">${fmt(s.tc)}</div></div><div class="fix-row"><div class="fl"><div class="ficon">🚗</div><div><div class="fn">Transport</div><div class="fsub">${(d.tickets.transport||[]).length} tickets</div></div></div><div class="fix-total num-hide">${fmt(s.tt)}</div></div><div class="fix-row"><div class="fl"><div class="ficon">🧹</div><div><div class="fn">Neteja</div><div class="fsub">${(d.tickets.neteja||[]).length} tickets</div></div></div><div class="fix-total num-hide">${fmt(s.tn)}</div></div><div class="fix-row"><div class="fl"><div class="ficon">⚡</div><div><div class="fn">Gastos Extres</div><div class="fsub">${(d.tickets.extres||[]).length} tickets</div></div></div><div class="fix-total num-hide">${fmt(s.te)}</div></div><div class="fix-row" style="margin-top:10px;border:1px solid rgba(245,90,90,.4);background:rgba(245,90,90,.06)"><div class="fl"><div class="ficon">📊</div><div class="fn" style="font-weight:700">TOTAL GASTOS FIXES</div></div><div class="fix-total num-hide" style="font-size:1rem">${fmt(s.gas)}</div></div>`;
-  document.getElementById('f-total').textContent=fmt(s.gas);
-  document.getElementById('f-total')._realText=fmt(s.gas);
-  // INGRESSOS
-  document.getElementById('i-aida').value=d.aida||'';document.getElementById('i-alex').value=d.alex||'';
-  setNumHide('i-aida-v', fmt(s.a));
-  setNumHide('i-alex-v', fmt(s.x));
-  setNumHide('i-com', fmt(s.ing));
-  const pctInput=document.getElementById('i-pct');if(document.activeElement!==pctInput)pctInput.value=(s.pct*100).toFixed(1);
-  // ANUAL
-  // ANUAL — calcula des de les dades reals de cada mes
-  const todayMonth = new Date().getMonth(); // mes actual (0-based)
-  let totalSobrant = 0;
-  const annualRows = MONTHS_FULL.map((m, i) => {
-    if (i > todayMonth) {
-      // Mes futur → desactivat
-      return `<div class="annual-row" style="opacity:.35">
-        <div class="annual-month">${m}</div>
-        <div class="annual-val" style="color:var(--text3)">—</div>
-      </div>`;
-    }
-    // Mes passat o actual → calcula des de les dades
-    const md = loadM(i);
-    const sc = comp(md);
-    totalSobrant += sc.sob;
-    const cls = sc.sob > 0 ? 'cvg' : sc.sob < 0 ? 'cvr' : '';
-    const sign = sc.sob > 0 ? '+' : '';
-    const isCurrent = i === currentMonth;
-    return `<div class="annual-row${isCurrent?' current':''}">
-      <div class="annual-month">${m}${isCurrent?' ◀':''}</div>
-      <div class="annual-val num-hide ${cls}">${sign}${fmt(sc.sob)}</div>
-    </div>`;
-  }).join('');
-
-  const goal = getGoal();
-  const goalPct = goal > 0 ? Math.min(100, (totalSobrant / goal) * 100) : 0;
-  document.getElementById('a-pct').textContent = goalPct.toFixed(0) + '%';
-  document.getElementById('a-bar').style.width = goalPct + '%';
-  document.getElementById('a-saved').textContent = `Estalviat: ${fmt(totalSobrant)}`;
-  document.getElementById('a-list').innerHTML = annualRows;
-  const gi = document.getElementById('a-goal-input');
-  if (document.activeElement !== gi) gi.value = goal;
-  // apply hide state after every render
-  setTimeout(applyHide,0);
+  const gas=base+tc+tt+tn+te, sob=ing-gas, pctG=ing>0?Math.min(100,(gas/ing)*100):0;
+  return {a,x,nom,pct,ing,base,tc,tt,tn,te,gas,sob,pctG};
 }
 
-function rTS(id,tickets){
-  const tot=(tickets||[]).reduce((s,e)=>s+(parseFloat(e.amount)||0),0);
-  document.getElementById(id).innerHTML=tickets&&tickets.length?tickets.map(e=>`<div class="ri"><div><div class="rn">${e.desc}</div><div class="rs">${e.date||''}</div></div><div style="display:flex;align-items:center"><div class="ra ra-neg num-hide">${fmt(parseFloat(e.amount))}</div><button class="del-btn" onclick="delT(${e.id})">✕</button></div></div>`).join('')+`<div class="sub-row"><span class="sub-lbl">Total ${MONTHS[currentMonth]}</span><span class="sub-val num-hide">${fmt(tot)}</span></div>`:'<div class="empty"><div class="empty-icon">✅</div>Sense moviments</div>';
+function fmt(n) {
+  if (n===null||isNaN(n)) return '—';
+  return n.toLocaleString('ca-ES',{minimumFractionDigits:2,maximumFractionDigits:2})+' €';
 }
 
-function getGoal() { return parseFloat(localStorage.getItem('vy2_goal')) || 10000; }
-function saveGoal(v) { const g = parseFloat(v); if (!isNaN(g) && g > 0) { localStorage.setItem('vy2_goal', g); render(); } }
-
-function changeMonth(dir){currentMonth=(currentMonth+dir+12)%12;render()}
-function goResum(){
-  document.getElementById('main-tabs').style.display='flex';
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.getElementById('page-resum').classList.add('active');
-  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===0));
-}
-function showTab(id,el){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));el.classList.add('active');document.getElementById('page-'+id).classList.add('active')}
-
-// HIDE/SHOW NUMBERS
+// ── HIDE/SHOW ─────────────────────────────────────────────────────────────────
 let numbersHidden = true;
-function toggleHide(){
-  numbersHidden=!numbersHidden;
-  document.getElementById('eye-btn').textContent=numbersHidden?'🙈':'👁';
+
+function toggleHide() {
+  numbersHidden = !numbersHidden;
+  document.getElementById('eye-btn').textContent = numbersHidden ? '🙈' : '👁';
   applyHide();
 }
-function applyHide(){
-  document.querySelectorAll('.num-hide').forEach(el=>{
-    const isInput = el.tagName==='INPUT';
-    if(numbersHidden){
-      // Guarda el valor actual SEMPRE (pot haver canviat)
-      if(isInput){ el._realVal=el.value; el.type='password'; }
-      else{ if(el.textContent) el._realText=el.textContent; el.classList.add('hidden-val'); el.textContent=''; }
+
+function applyHide() {
+  document.querySelectorAll('.num-hide').forEach(el => {
+    const isInput = el.tagName === 'INPUT';
+    if (numbersHidden) {
+      if (isInput) { el._realVal = el.value; el.type = 'password'; }
+      else { if (el.textContent) el._realText = el.textContent; el.classList.add('hidden-val'); el.textContent = ''; }
     } else {
-      if(isInput){ el.type='number'; if(el._realVal!==undefined) el.value=el._realVal; }
-      else{ el.classList.remove('hidden-val'); if(el._realText) el.textContent=el._realText; }
+      if (isInput) { el.type = 'number'; if (el._realVal !== undefined) el.value = el._realVal; }
+      else { el.classList.remove('hidden-val'); if (el._realText) el.textContent = el._realText; }
     }
   });
 }
 
-// Funció per actualitzar un element num-hide correctament
 function setNumHide(id, val) {
   const el = document.getElementById(id);
   if (!el) return;
   el._realText = val;
   if (!numbersHidden) el.textContent = val;
 }
-// Wrap fmt to update hidden elements properly
-const _origRender = render;
-function safeSet(id, val){
-  const el=document.getElementById(id);if(!el)return;
-  if(el.classList.contains('num-hide')&&numbersHidden){el._realText=val;}
-  else{el.textContent=val;if(el.classList.contains('num-hide'))el._realText=val;}
+
+// ── RENDER ────────────────────────────────────────────────────────────────────
+function render() {
+  const d = loadM(currentMonth), s = comp(d);
+  document.getElementById('monthLabel').textContent = MONTHS_FULL[currentMonth];
+
+  // RESUM
+  setNumHide('r-ing', fmt(s.ing));
+  document.getElementById('r-ing-sub').textContent = MONTHS_FULL[currentMonth] + ' ' + new Date().getFullYear();
+  setNumHide('r-gas', fmt(s.gas));
+  setNumHide('r-sob', fmt(s.sob));
+  document.getElementById('r-pct').textContent = s.pctG.toFixed(0) + '%';
+  const bar = document.getElementById('r-bar');
+  bar.style.width = s.pctG + '%';
+  bar.className = 'pf ' + (s.pctG > 100 ? 'pf-r' : s.pctG > 80 ? 'pf-o' : 'pf-g');
+  const badge = document.getElementById('r-badge');
+  badge.textContent = s.sob >= 0 ? '✓ Positiu' : '✗ Negatiu';
+  badge.className = 'badge ' + (s.sob >= 0 ? 'bg' : 'br');
+
+  const bkd = [[' Base (lloguer,llum…)',s.base],['🛒 Compra',s.tc],['🚗 Transport',s.tt],['🧹 Neteja',s.tn],['⚡ Extres',s.te]].filter(([,v])=>v>0);
+  document.getElementById('r-breakdown').innerHTML = bkd.map(([l,v]) =>
+    '<div class="ri"><div class="rn">'+l+'</div><div class="ra ra-neg num-hide">'+fmt(v)+'</div></div>'
+  ).join('') || '<div class="empty"><div class="empty-icon">📊</div>Sense dades</div>';
+
+  const all = [
+    ...(d.tickets.compra||[]).map(e=>({...e,cat:'🛒'})),
+    ...(d.tickets.transport||[]).map(e=>({...e,cat:'🚗'})),
+    ...(d.tickets.neteja||[]).map(e=>({...e,cat:'🧹'})),
+    ...(d.tickets.extres||[]).map(e=>({...e,cat:'⚡'}))
+  ].sort((a,b)=>new Date(b.date)-new Date(a.date)).slice(0,10);
+  document.getElementById('r-recent').innerHTML = all.map(e =>
+    '<div class="ri"><div class="rl"><div class="ricon">'+e.cat+'</div><div><div class="rn">'+e.desc+'</div><div class="rs">'+e.date+'</div></div></div><div style="display:flex;align-items:center"><div class="ra ra-neg num-hide">'+fmt(parseFloat(e.amount))+'</div><button class="del-btn" onclick="delT('+e.id+')">✕</button></div></div>'
+  ).join('') || '<div class="empty"><div class="empty-icon">🧾</div>Cap moviment</div>';
+
+  // TICKETS
+  rTS('t-compra', d.tickets.compra);
+  rTS('t-transport', d.tickets.transport);
+  rTS('t-neteja', d.tickets.neteja);
+  rTS('t-extres', d.tickets.extres);
+
+  // FIXES
+  document.getElementById('f-base-list').innerHTML = FIXES_BASE.map(f =>
+    '<div class="fix-row"><div class="fl"><div class="ficon">'+f.icon+'</div><div class="fn">'+f.label+'</div></div><input class="fix-input num-hide" type="number" value="'+(d.base[f.id]||0).toFixed(2)+'" oninput="updF(\''+f.id+'\',this.value)" step="0.01"></div>'
+  ).join('');
+  document.getElementById('f-ticket-totals').innerHTML =
+    '<div class="fix-row"><div class="fl"><div class="ficon">🛒</div><div><div class="fn">Compra</div><div class="fsub">'+(d.tickets.compra||[]).length+' tickets</div></div></div><div class="fix-total num-hide">'+fmt(s.tc)+'</div></div>'+
+    '<div class="fix-row"><div class="fl"><div class="ficon">🚗</div><div><div class="fn">Transport</div><div class="fsub">'+(d.tickets.transport||[]).length+' tickets</div></div></div><div class="fix-total num-hide">'+fmt(s.tt)+'</div></div>'+
+    '<div class="fix-row"><div class="fl"><div class="ficon">🧹</div><div><div class="fn">Neteja</div><div class="fsub">'+(d.tickets.neteja||[]).length+' tickets</div></div></div><div class="fix-total num-hide">'+fmt(s.tn)+'</div></div>'+
+    '<div class="fix-row"><div class="fl"><div class="ficon">⚡</div><div><div class="fn">Gastos Extres</div><div class="fsub">'+(d.tickets.extres||[]).length+' tickets</div></div></div><div class="fix-total num-hide">'+fmt(s.te)+'</div></div>'+
+    '<div class="fix-row" style="margin-top:10px;border:1px solid rgba(245,90,90,.4);background:rgba(245,90,90,.06)"><div class="fl"><div class="ficon">📊</div><div class="fn" style="font-weight:700">TOTAL GASTOS FIXES</div></div><div class="fix-total num-hide" style="font-size:1rem">'+fmt(s.gas)+'</div></div>';
+  const ftEl = document.getElementById('f-total');
+  ftEl.textContent = fmt(s.gas); ftEl._realText = fmt(s.gas);
+
+  // INGRESSOS
+  document.getElementById('i-aida').value = d.aida || '';
+  document.getElementById('i-alex').value = d.alex || '';
+  setNumHide('i-aida-v', fmt(s.a));
+  setNumHide('i-alex-v', fmt(s.x));
+  setNumHide('i-com', fmt(s.ing));
+  const pctInput = document.getElementById('i-pct');
+  if (document.activeElement !== pctInput) pctInput.value = (s.pct * 100).toFixed(1);
+
+  // ANUAL
+  const todayMonth = new Date().getMonth();
+  let totalSobrant = 0;
+  const annualRows = MONTHS_FULL.map((m, i) => {
+    if (i > todayMonth) {
+      return '<div class="annual-row" style="opacity:.35"><div class="annual-month">'+m+'</div><div class="annual-val" style="color:var(--text3)">—</div></div>';
+    }
+    const sc = comp(loadM(i));
+    totalSobrant += sc.sob;
+    const cls = sc.sob > 0 ? 'cvg' : sc.sob < 0 ? 'cvr' : '';
+    const sign = sc.sob > 0 ? '+' : '';
+    const cur = i === currentMonth;
+    return '<div class="annual-row'+(cur?' current':'')+'"><div class="annual-month">'+m+(cur?' ◀':'')+'</div><div class="annual-val num-hide '+cls+'">'+sign+fmt(sc.sob)+'</div></div>';
+  }).join('');
+
+  const goal = getGoal();
+  const goalPct = goal > 0 ? Math.min(100, (totalSobrant / goal) * 100) : 0;
+  document.getElementById('a-pct').textContent = goalPct.toFixed(0) + '%';
+  document.getElementById('a-bar').style.width = goalPct + '%';
+  document.getElementById('a-saved').textContent = 'Estalviat: ' + fmt(totalSobrant);
+  document.getElementById('a-list').innerHTML = annualRows;
+  const gi = document.getElementById('a-goal-input');
+  if (document.activeElement !== gi) gi.value = goal;
+
+  setTimeout(applyHide, 0);
 }
-function updF(id,v){const d=loadM(currentMonth);d.base[id]=parseFloat(v)||0;saveM(currentMonth,d);render()}
-function updateIng(){const d=loadM(currentMonth);d.aida=parseFloat(document.getElementById('i-aida').value)||0;d.alex=parseFloat(document.getElementById('i-alex').value)||0;saveM(currentMonth,d);render()}
-function setPct(v){const d=loadM(currentMonth);d.pct=v;saveM(currentMonth,d);render()}
-function delT(id){const d=loadM(currentMonth);['compra','transport','neteja','extres'].forEach(c=>{d.tickets[c]=(d.tickets[c]||[]).filter(e=>e.id!==id)});saveM(currentMonth,d);render()}
-function openModal(cat){document.getElementById('m-desc').value='';document.getElementById('m-amount').value='';document.getElementById('m-date').value=new Date().toISOString().split('T')[0];if(cat)document.getElementById('m-cat').value=cat;document.getElementById('modal').classList.add('open')}
-function closeModal(){document.getElementById('modal').classList.remove('open')}
-function closeOut(e){if(e.target.id==='modal')closeModal()}
-function saveTicket(){const desc=document.getElementById('m-desc').value.trim(),amount=parseFloat(document.getElementById('m-amount').value),date=document.getElementById('m-date').value,cat=document.getElementById('m-cat').value;if(!desc||isNaN(amount)||amount<=0){alert('Omple tots els camps');return}const d=loadM(currentMonth);d.tickets[cat].push({id:Date.now(),desc,amount,date});saveM(currentMonth,d);closeModal();render()}
-// ── PIN LOGIC ────────────────────────────────────────────────────────────────
+
+function rTS(id, tickets) {
+  const tot = (tickets||[]).reduce((s,e)=>s+(parseFloat(e.amount)||0), 0);
+  document.getElementById(id).innerHTML = tickets && tickets.length
+    ? tickets.map(e =>
+        '<div class="ri"><div><div class="rn">'+e.desc+'</div><div class="rs">'+(e.date||'')+'</div></div><div style="display:flex;align-items:center"><div class="ra ra-neg num-hide">'+fmt(parseFloat(e.amount))+'</div><button class="del-btn" onclick="delT('+e.id+')">✕</button></div></div>'
+      ).join('') + '<div class="sub-row"><span class="sub-lbl">Total '+MONTHS[currentMonth]+'</span><span class="sub-val num-hide">'+fmt(tot)+'</span></div>'
+    : '<div class="empty"><div class="empty-icon">✅</div>Sense moviments</div>';
+}
+
+function getGoal() { return parseFloat(localStorage.getItem('vy2_goal')) || 10000; }
+function saveGoal(v) { const g = parseFloat(v); if (!isNaN(g) && g > 0) { localStorage.setItem('vy2_goal', g); render(); } }
+
+function changeMonth(dir) { currentMonth = (currentMonth + dir + 12) % 12; render(); }
+function showTab(id, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('page-'+id).classList.add('active');
+}
+function updF(id, v) { const d = loadM(currentMonth); d.base[id] = parseFloat(v)||0; saveM(currentMonth, d); render(); }
+function updateIng() { const d = loadM(currentMonth); d.aida = parseFloat(document.getElementById('i-aida').value)||0; d.alex = parseFloat(document.getElementById('i-alex').value)||0; saveM(currentMonth, d); render(); }
+function setPct(v) { const d = loadM(currentMonth); d.pct = v; saveM(currentMonth, d); render(); }
+function delT(id) { const d = loadM(currentMonth); ['compra','transport','neteja','extres'].forEach(c => { d.tickets[c] = (d.tickets[c]||[]).filter(e => e.id !== id); }); saveM(currentMonth, d); render(); }
+function openModal(cat) { document.getElementById('m-desc').value=''; document.getElementById('m-amount').value=''; document.getElementById('m-date').value=new Date().toISOString().split('T')[0]; if(cat) document.getElementById('m-cat').value=cat; document.getElementById('modal').classList.add('open'); }
+function closeModal() { document.getElementById('modal').classList.remove('open'); }
+function closeOut(e) { if (e.target.id === 'modal') closeModal(); }
+function saveTicket() {
+  const desc = document.getElementById('m-desc').value.trim();
+  const amount = parseFloat(document.getElementById('m-amount').value);
+  const date = document.getElementById('m-date').value;
+  const cat = document.getElementById('m-cat').value;
+  if (!desc || isNaN(amount) || amount <= 0) { alert('Omple tots els camps'); return; }
+  const d = loadM(currentMonth);
+  d.tickets[cat].push({id:Date.now(), desc, amount, date});
+  saveM(currentMonth, d);
+  closeModal();
+  render();
+}
+
+// ── PIN ───────────────────────────────────────────────────────────────────────
 const PIN_HASH = '15cfbe902e41e2ffbb43a44546c9e6debc2861082346d2e0052f491b50f67031';
 let pinEntry = '';
-let pinHidden = true; // ocult per defecte
+let pinHidden = true;
 
 function setVis(hidden) {
   pinHidden = hidden;
@@ -567,7 +573,7 @@ function setVis(hidden) {
 
 async function hashPin(pin) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pin));
-  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
 }
 
 function pinPress(d) {
@@ -592,9 +598,9 @@ async function checkPin() {
     document.getElementById('pin-error').textContent = 'PIN incorrecte. Torna-ho a intentar.';
     const dots = document.getElementById('pin-dots');
     dots.classList.add('pin-shake');
-    setTimeout(()=>dots.classList.remove('pin-shake'), 400);
+    setTimeout(() => dots.classList.remove('pin-shake'), 400);
     pinEntry = '';
-    [0,1,2,3].forEach(i=>document.getElementById('d'+i).classList.remove('filled'));
+    [0,1,2,3].forEach(i => document.getElementById('d'+i).classList.remove('filled'));
   }
 }
 
@@ -603,24 +609,22 @@ function enterApp(hidden) {
   document.getElementById('eye-btn').textContent = hidden ? '🙈' : '👁';
   document.getElementById('pin-screen').style.display = 'none';
   document.getElementById('main-tabs').style.display = 'flex';
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById('page-resum').classList.add('active');
-  document.querySelectorAll('#main-tabs .tab').forEach((t,i)=>t.classList.toggle('active',i===0));
-  render(); // re-render ara que l'app és visible
+  document.querySelectorAll('#main-tabs .tab').forEach((t,i) => t.classList.toggle('active', i===0));
+  render();
   applyHide();
 }
 
+// ── INIT ──────────────────────────────────────────────────────────────────────
 render();
-// Carrega silenciosament del Sheet en iniciar (si ja té URL configurada)
-loadFromSheets(false);
-// Inicialitza data a la pantalla d'entrada
-const _now=new Date();
-const _dies=['Diumenge','Dilluns','Dimarts','Dimecres','Dijous','Divendres','Dissabte'];
-const _mesos=['gener','febrer','març','abril','maig','juny','juliol','agost','setembre','octubre','novembre','desembre'];
-document.getElementById('hola-date').textContent=`${_dies[_now.getDay()]}, ${_now.getDate()} de ${_mesos[_now.getMonth()]}`;
-// Amaga l'app fins que s'entri correctament
-document.getElementById('main-tabs').style.display='none';
-document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+loadFromSheets(false); // càrrega silenciosa del Sheet en iniciar
+const _now = new Date();
+const _dies = ['Diumenge','Dilluns','Dimarts','Dimecres','Dijous','Divendres','Dissabte'];
+const _mesos = ['gener','febrer','març','abril','maig','juny','juliol','agost','setembre','octubre','novembre','desembre'];
+document.getElementById('hola-date').textContent = _dies[_now.getDay()] + ', ' + _now.getDate() + ' de ' + _mesos[_now.getMonth()];
+document.getElementById('main-tabs').style.display = 'none';
+document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
 </script>
 </body>
 </html>
