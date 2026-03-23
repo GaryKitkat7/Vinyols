@@ -3,10 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#0f0f0f">
 <title>Finances Vinyols</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
@@ -327,7 +324,7 @@ function saveM(m, d) {
 }
 
 // ── GOOGLE SHEETS SYNC ───────────────────────────────────────────────────────
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzoRrXkz3b3ZN0C1yhraSP7QferCnkT_e4tts7zwGj_aM3M4NC_PvDceMWBV70AMVW0Pw/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyxdTEQSzsEzMCcLQILlo7Tag7KNbp99prisACbnpMdHslYT5KNt5so2Xp-4SOqfGQjvg/exec';
 const SECRET = 'Vinyols2025';
 let syncTimer = null;
 
@@ -341,8 +338,12 @@ async function doSync() {
   try {
     const allData = {};
     for (let m = 0; m < 12; m++) {
-      const r = localStorage.getItem(key(m));
-      if (r) allData[m] = JSON.parse(r);
+      const d = loadM(m);
+      // Només envia mesos que tinguin ingressos o tickets
+      const hasData = (d.aida || d.alex || Object.values(d.base||{}).some(v=>v>0) ||
+        (d.tickets.compra||[]).length || (d.tickets.transport||[]).length ||
+        (d.tickets.neteja||[]).length || (d.tickets.extres||[]).length);
+      if (hasData) allData[m] = d;
     }
     const url = SCRIPT_URL + '?action=save&secret=' + SECRET + '&data=' + encodeURIComponent(JSON.stringify(allData));
     await fetch(url, { method: 'GET', mode: 'no-cors' });
