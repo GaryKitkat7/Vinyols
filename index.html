@@ -128,16 +128,18 @@
 </style>
 </head>
 <body>
-<!-- PIN LOCK SCREEN -->
+<!-- PANTALLA D'ENTRADA -->
 <div class="pin-screen" id="pin-screen">
-  <div class="pin-logo">Finances <span>Vinyols</span></div>
-  <div class="pin-sub">Introdueix el teu PIN</div>
+  <div class="hola-greeting" style="margin-bottom:4px"><span class="wave">👋</span> Hola,<br><span class="hola-name">Alex</span></div>
+  <div class="pin-sub" id="hola-date">—</div>
+
   <div class="pin-dots" id="pin-dots">
     <div class="pin-dot" id="d0"></div>
     <div class="pin-dot" id="d1"></div>
     <div class="pin-dot" id="d2"></div>
     <div class="pin-dot" id="d3"></div>
   </div>
+
   <div class="pin-grid">
     <button class="pin-btn" onclick="pinPress('1')">1</button>
     <button class="pin-btn" onclick="pinPress('2')">2</button>
@@ -152,7 +154,14 @@
     <button class="pin-btn" onclick="pinPress('0')">0</button>
     <button class="pin-btn del" onclick="pinDel()">⌫</button>
   </div>
+
   <div class="pin-error" id="pin-error"></div>
+
+  <!-- Selector visibilitat -->
+  <div style="display:flex;gap:10px;margin-top:24px;width:100%;max-width:280px">
+    <button id="vis-ocult" onclick="setVis(true)" style="flex:1;padding:12px 8px;border-radius:10px;font-family:inherit;font-size:.82rem;font-weight:600;cursor:pointer;border:2px solid var(--accent);background:rgba(200,245,90,.1);color:var(--accent)">🙈 Ocults</button>
+    <button id="vis-visible" onclick="setVis(false)" style="flex:1;padding:12px 8px;border-radius:10px;font-family:inherit;font-size:.82rem;font-weight:600;cursor:pointer;border:2px solid var(--border);background:var(--surface);color:var(--text2)">👁 Visibles</button>
+  </div>
 </div>
 
 <div class="topbar">
@@ -166,36 +175,14 @@
     </div>
   </div>
 </div>
-<div class="tabs">
-  <button class="tab active" onclick="showTab('hola',this)">👋 Hola</button>
-  <button class="tab" onclick="showTab('resum',this)">Resum</button>
+<div class="tabs" id="main-tabs" style="display:none">
+  <button class="tab active" onclick="showTab('resum',this)">Resum</button>
   <button class="tab" onclick="showTab('tickets',this)">Tickets</button>
   <button class="tab" onclick="showTab('fixes',this)">Fixes</button>
   <button class="tab" onclick="showTab('ingressos',this)">Ingressos</button>
   <button class="tab" onclick="showTab('anual',this)">Anual</button>
 </div>
 <div class="content">
-
-<div id="page-hola" class="page active">
-  <div class="hola-wrap">
-    <div class="hola-greeting"><span class="wave">👋</span> Hola,<br><span class="hola-name">Alex</span></div>
-    <div class="hola-sub" id="hola-date">—</div>
-    <div class="hola-cards">
-      <div class="hola-card" onclick="goResum()">
-        <div class="hola-card-icon">📊</div>
-        <div class="hola-card-label">Sobrant</div>
-        <div class="hola-card-val" id="hola-sob">—</div>
-      </div>
-      <div class="hola-card" onclick="goResum()">
-        <div class="hola-card-icon">💸</div>
-        <div class="hola-card-label">Gastos</div>
-        <div class="hola-card-val" id="hola-gas">—</div>
-      </div>
-    </div>
-    <button class="hola-enter" onclick="goResum()">Entrar →</button>
-    <div class="hola-month" id="hola-month-lbl">—</div>
-  </div>
-</div>
 
 <!-- RESUM -->
 <div id="page-resum" class="page">
@@ -343,19 +330,6 @@ function render(){
   const d=loadM(currentMonth),s=comp(d);
   document.getElementById('monthLabel').textContent=MONTHS_FULL[currentMonth];
 
-  // HOLA PAGE
-  const now=new Date();
-  const dies=['Diumenge','Dilluns','Dimarts','Dimecres','Dijous','Divendres','Dissabte'];
-  const mesos=['gener','febrer','març','abril','maig','juny','juliol','agost','setembre','octubre','novembre','desembre'];
-  document.getElementById('hola-date').textContent=`${dies[now.getDay()]}, ${now.getDate()} de ${mesos[now.getMonth()]}`;
-  document.getElementById('hola-month-lbl').textContent=`Veient ${MONTHS_FULL[currentMonth]}`;
-  // Hola cards use safeSet so they also get hidden
-  const holaS=document.getElementById('hola-sob');
-  const holaG=document.getElementById('hola-gas');
-  holaS.textContent=fmt(s.sob);holaS._realText=fmt(s.sob);holaS.classList.add('num-hide');
-  holaG.textContent=fmt(s.gas);holaG._realText=fmt(s.gas);holaG.classList.add('num-hide');
-  holaS.style.color=s.sob>=0?'var(--accent)':'var(--red)';
-
   // RESUM
   document.getElementById('r-ing').textContent=fmt(s.ing);
   document.getElementById('r-ing-sub').textContent=`${MONTHS_FULL[currentMonth]} ${new Date().getFullYear()}`;
@@ -397,7 +371,12 @@ function rTS(id,tickets){
 }
 
 function changeMonth(dir){currentMonth=(currentMonth+dir+12)%12;render()}
-function goResum(){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.tab')[1].classList.add('active');document.getElementById('page-resum').classList.add('active')}
+function goResum(){
+  document.getElementById('main-tabs').style.display='flex';
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-resum').classList.add('active');
+  document.querySelectorAll('.tab').forEach((t,i)=>t.classList.toggle('active',i===0));
+}
 function showTab(id,el){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));el.classList.add('active');document.getElementById('page-'+id).classList.add('active')}
 
 // HIDE/SHOW NUMBERS
@@ -439,6 +418,20 @@ function saveTicket(){const desc=document.getElementById('m-desc').value.trim(),
 // ── PIN LOGIC ────────────────────────────────────────────────────────────────
 const PIN_HASH = '15cfbe902e41e2ffbb43a44546c9e6debc2861082346d2e0052f491b50f67031';
 let pinEntry = '';
+let pinHidden = true; // ocult per defecte
+
+function setVis(hidden) {
+  pinHidden = hidden;
+  const bO = document.getElementById('vis-ocult');
+  const bV = document.getElementById('vis-visible');
+  if (hidden) {
+    bO.style.cssText = 'flex:1;padding:12px 8px;border-radius:10px;font-family:inherit;font-size:.82rem;font-weight:600;cursor:pointer;border:2px solid var(--accent);background:rgba(200,245,90,.1);color:var(--accent)';
+    bV.style.cssText = 'flex:1;padding:12px 8px;border-radius:10px;font-family:inherit;font-size:.82rem;font-weight:600;cursor:pointer;border:2px solid var(--border);background:var(--surface);color:var(--text2)';
+  } else {
+    bV.style.cssText = 'flex:1;padding:12px 8px;border-radius:10px;font-family:inherit;font-size:.82rem;font-weight:600;cursor:pointer;border:2px solid var(--accent2);background:rgba(90,245,200,.1);color:var(--accent2)';
+    bO.style.cssText = 'flex:1;padding:12px 8px;border-radius:10px;font-family:inherit;font-size:.82rem;font-weight:600;cursor:pointer;border:2px solid var(--border);background:var(--surface);color:var(--text2)';
+  }
+}
 
 async function hashPin(pin) {
   const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(pin));
@@ -462,8 +455,7 @@ function pinDel() {
 async function checkPin() {
   const h = await hashPin(pinEntry);
   if (h === PIN_HASH) {
-    sessionStorage.setItem('unlocked','1');
-    document.getElementById('pin-screen').style.display = 'none';
+    enterApp(pinHidden);
   } else {
     document.getElementById('pin-error').textContent = 'PIN incorrecte. Torna-ho a intentar.';
     const dots = document.getElementById('pin-dots');
@@ -474,14 +466,26 @@ async function checkPin() {
   }
 }
 
-// Check if already unlocked this session
-if (sessionStorage.getItem('unlocked') === '1') {
+function enterApp(hidden) {
+  numbersHidden = hidden;
+  document.getElementById('eye-btn').textContent = hidden ? '🙈' : '👁';
   document.getElementById('pin-screen').style.display = 'none';
+  document.getElementById('main-tabs').style.display = 'flex';
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-resum').classList.add('active');
+  document.querySelectorAll('#main-tabs .tab').forEach((t,i)=>t.classList.toggle('active',i===0));
+  applyHide();
 }
 
 render();
-document.getElementById('eye-btn').textContent='🙈';
-applyHide();
+// Inicialitza data a la pantalla d'entrada
+const _now=new Date();
+const _dies=['Diumenge','Dilluns','Dimarts','Dimecres','Dijous','Divendres','Dissabte'];
+const _mesos=['gener','febrer','març','abril','maig','juny','juliol','agost','setembre','octubre','novembre','desembre'];
+document.getElementById('hola-date').textContent=`${_dies[_now.getDay()]}, ${_now.getDate()} de ${_mesos[_now.getMonth()]}`;
+// Amaga l'app fins que s'entri correctament
+document.getElementById('main-tabs').style.display='none';
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
 </script>
 </body>
 </html>
