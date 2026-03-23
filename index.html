@@ -296,36 +296,44 @@ const FIXES_BASE=[
   {id:'altres',label:'Altres',icon:'📦'},
 ];
 const PCTS=[{val:0.35,label:'35%',note:'Base IRPF'},{val:0.50,label:'50%',note:'Nòmines'},{val:0.60,label:'60%',note:'Especial'}];
-const EXCEL={
-  0:{aida:1885,alex:2478,pct:0.50,base:{lloguer:820,parking:100,telefon:80.95,llum:80,gas:30,aigua:20,seguros:3.87,cuotes:0,impostos:0,altres:0},tickets:{compra:[{id:1,desc:'Compra1',amount:50,date:'2025-01-14'},{id:2,desc:'Compra2',amount:20,date:'2025-01-14'},{id:3,desc:'Compra3',amount:32,date:'2025-01-14'},{id:4,desc:'Compra4',amount:32,date:'2025-01-14'},{id:5,desc:'Compra5',amount:41,date:'2025-01-14'},{id:6,desc:'Compra6',amount:21,date:'2025-01-14'},{id:7,desc:'Compra7',amount:2,date:'2025-01-14'},{id:8,desc:'Compra8',amount:2,date:'2025-01-14'}],transport:[{id:101,desc:'Gasoil1',amount:50,date:'2025-01-14'},{id:102,desc:'Gasoil2',amount:50,date:'2025-01-14'},{id:103,desc:'Gasoil3',amount:50,date:'2025-01-14'},{id:104,desc:'Tarjeta Tren',amount:35,date:'2025-01-14'},{id:105,desc:'AVE',amount:15,date:'2025-01-14'}],neteja:[{id:201,desc:'Neteja 14/1',amount:25,date:'2025-01-14'},{id:202,desc:'Neteja 28/1',amount:25,date:'2025-01-28'}],extres:[]}},
-  1:{aida:1924,alex:2482,pct:0.50,base:{lloguer:820,parking:100,telefon:80.95,llum:87.88,gas:85.79,aigua:0,seguros:3.87,cuotes:0,impostos:0,altres:55.04},tickets:{compra:[{id:1,desc:'Casa Trebol',amount:3.38,date:'2025-02-01'},{id:2,desc:'Carrefour Sants (15/2)',amount:76.57,date:'2025-02-15'},{id:3,desc:'Compra BonArea (17/2)',amount:2.20,date:'2025-02-17'},{id:4,desc:'Compra Carrefour (17/2)',amount:13.52,date:'2025-02-17'},{id:5,desc:'Compra BonArea (22/2)',amount:6.25,date:'2025-02-22'},{id:6,desc:'Casa Trebol (23/2)',amount:2.37,date:'2025-02-23'},{id:7,desc:'Compres Varies',amount:32.55,date:'2025-02-28'}],transport:[],neteja:[],extres:[{id:301,desc:'Digi',amount:20,date:'2025-02-01'},{id:302,desc:'Orange Final Mes Gener',amount:24.89,date:'2025-02-01'},{id:303,desc:'Vivari (25/2)',amount:10.15,date:'2025-02-25'}]}},
-  2:{aida:1738,alex:2457,pct:0.60,base:{lloguer:279.45,parking:0,telefon:0,llum:0,gas:0,aigua:0,seguros:136.08,cuotes:0,impostos:0,altres:0},tickets:{compra:[{id:1,desc:'Lidl Salou',amount:99.87,date:'2025-03-01'},{id:2,desc:'BonArea',amount:33.39,date:'2025-03-01'},{id:3,desc:'Lidl Vinyols (10/3)',amount:57.44,date:'2025-03-10'},{id:4,desc:'Esclat (10/3)',amount:25.24,date:'2025-03-10'},{id:5,desc:'Dia Reus',amount:4.42,date:'2025-03-12'},{id:6,desc:'Pa Vinyols',amount:0.95,date:'2025-03-15'},{id:7,desc:'Embotit BonArea',amount:16.97,date:'2025-03-18'}],transport:[{id:101,desc:'Gasolina (1/3)',amount:35,date:'2025-03-01'},{id:102,desc:'Gasolina (4/3)',amount:38.15,date:'2025-03-04'},{id:103,desc:'Gasolina (6/3)',amount:30,date:'2025-03-06'},{id:104,desc:'Gasolina (11/3)',amount:38.20,date:'2025-03-11'},{id:105,desc:'Gasolina (15/3)',amount:38.36,date:'2025-03-15'},{id:106,desc:'Parking Corte Ingles',amount:2.45,date:'2025-03-16'},{id:107,desc:'Gasolina(18/3)',amount:38.39,date:'2025-03-18'},{id:108,desc:'Gasolina (20/3)',amount:39.78,date:'2025-03-20'}],neteja:[],extres:[{id:301,desc:'Basures',amount:30,date:'2025-03-01'},{id:302,desc:'Pizzeria Vinyols',amount:39.5,date:'2025-03-05'},{id:303,desc:'Seguro Antic',amount:3.87,date:'2025-03-07'},{id:304,desc:'Compra escobilles',amount:24.95,date:'2025-03-10'},{id:305,desc:'Orange Tancament',amount:82.99,date:'2025-03-12'},{id:306,desc:'Beep Reus',amount:61.98,date:'2025-03-15'},{id:307,desc:'Aigua BCN',amount:59.74,date:'2025-03-18'},{id:308,desc:'Ikea Dinar',amount:18.94,date:'2025-03-22'},{id:309,desc:'Ikea Compra',amount:295.1,date:'2025-03-22'},{id:310,desc:'Amazon',amount:49.47,date:'2025-03-24'},{id:311,desc:'Chino TGN',amount:3.75,date:'2025-03-25'},{id:312,desc:'El Corte Ingles',amount:25.15,date:'2025-03-26'},{id:313,desc:'Amazon (26/2)',amount:265,date:'2025-03-26'},{id:314,desc:'Endesa Tancament',amount:19.89,date:'2025-03-28'},{id:315,desc:'Endesa Tancament',amount:38.53,date:'2025-03-28'},{id:316,desc:'Beep Reus',amount:16.95,date:'2025-03-30'}]}},
-  3:{aida:900.703125,alex:1184.4,pct:0.35,base:{lloguer:820,parking:0,telefon:82.95,llum:76.38,gas:35.66,aigua:0,seguros:3.87,cuotes:0,impostos:0,altres:0},tickets:{compra:[{id:1,desc:'BonArea (10/4)',amount:4.05,date:'2025-04-10'},{id:2,desc:'Market Sants (10/4)',amount:37.34,date:'2025-04-10'},{id:3,desc:'Mercadona Sants (13/4)',amount:2.85,date:'2025-04-13'},{id:4,desc:'Mercadona Sants (15/4)',amount:7.82,date:'2025-04-15'},{id:5,desc:'Lidl Badal (15/04)',amount:29.73,date:'2025-04-15'},{id:6,desc:'Pa',amount:1.85,date:'2025-04-18'},{id:7,desc:'Chinos',amount:3.38,date:'2025-04-20'},{id:8,desc:'Market Sants(23/04)',amount:58.15,date:'2025-04-23'},{id:9,desc:'Pa / Croisants (24/04)',amount:10.11,date:'2025-04-24'},{id:10,desc:'Patates Reus',amount:2.75,date:'2025-04-25'},{id:11,desc:'Vermut + Licor Reus',amount:27.55,date:'2025-04-26'}],transport:[{id:101,desc:'Diesel Reus',amount:41.84,date:'2025-04-10'},{id:102,desc:'Parking Carrilet',amount:4.5,date:'2025-04-15'},{id:103,desc:'Diesel BCN',amount:30,date:'2025-04-20'}],neteja:[{id:201,desc:'LuzMary (10/4)',amount:40,date:'2025-04-10'},{id:202,desc:'LuzMary (24/04)',amount:40,date:'2025-04-24'}],extres:[{id:301,desc:'Burguer King',amount:18.77,date:'2025-04-15'},{id:302,desc:'Dinar Mateo',amount:60.2,date:'2025-04-20'}]}},
-  4:{aida:900.703125,alex:1184.4,pct:0.35,base:{lloguer:820,parking:100,telefon:82.95,llum:66.59,gas:0,aigua:67.83,seguros:3.87,cuotes:0,impostos:0,altres:0},tickets:{compra:[{id:1,desc:'Carrefour Sants (07/5)',amount:11.89,date:'2025-05-07'},{id:2,desc:'Compra BonPreu (9/5)',amount:118.36,date:'2025-05-09'},{id:3,desc:'Maxipa',amount:4.65,date:'2025-05-10'},{id:4,desc:'Carrefour Sants (13/5)',amount:21.38,date:'2025-05-13'},{id:5,desc:'Maxi pa (17/5)',amount:3.1,date:'2025-05-17'},{id:6,desc:'Bon Area (17/5)',amount:8.43,date:'2025-05-17'},{id:7,desc:'Carrefour Sants',amount:34.5,date:'2025-05-20'},{id:8,desc:'BonArea (25/5)',amount:12.27,date:'2025-05-25'},{id:9,desc:'Carrefour Sants (27/05)',amount:48.14,date:'2025-05-27'}],transport:[{id:101,desc:'Diesel BCN',amount:47.84,date:'2025-05-01'},{id:102,desc:'Aena',amount:0.9,date:'2025-05-05'},{id:103,desc:'Diesel La Palma',amount:51.26,date:'2025-05-15'}],neteja:[{id:201,desc:'LuzMary (5/5)',amount:40,date:'2025-05-05'},{id:202,desc:'LuzMary (8/5)',amount:40,date:'2025-05-08'}],extres:[{id:301,desc:'Pastilles Lactosa',amount:18.95,date:'2025-05-10'},{id:302,desc:'Burguer Sants',amount:37.8,date:'2025-05-15'},{id:303,desc:'Alitas (21/5)',amount:34.8,date:'2025-05-21'}]}},
-  5:{aida:900.703125,alex:1184.4,pct:0.35,base:{lloguer:820,parking:50,telefon:82.95,llum:54.12,gas:31.18,aigua:0,seguros:3.87,cuotes:0,impostos:0,altres:0},tickets:{compra:[{id:1,desc:'Bon Area (01/06)',amount:2.58,date:'2025-06-01'},{id:2,desc:'LidL Esplugs (01/06)',amount:120.3,date:'2025-06-01'},{id:3,desc:'Chinos (03/06)',amount:1.5,date:'2025-06-03'},{id:4,desc:'Maxipa (03/06)',amount:3.1,date:'2025-06-03'},{id:5,desc:'Ferreteria (03/06)',amount:13.11,date:'2025-06-03'},{id:6,desc:'Carrefour (06/06)',amount:27.18,date:'2025-06-06'},{id:7,desc:'Carrefour (07/06)',amount:21.94,date:'2025-06-07'},{id:8,desc:'Carrefour Sants (12/06)',amount:29.2,date:'2025-06-12'},{id:9,desc:'Market Sants (17/06)',amount:24.41,date:'2025-06-17'},{id:10,desc:'BonPreu (20/06)',amount:24.27,date:'2025-06-20'},{id:11,desc:'Esclat (21/06)',amount:7.4,date:'2025-06-21'},{id:12,desc:'Market Sants (28/06)',amount:23.46,date:'2025-06-28'}],transport:[{id:101,desc:'Parquing Carrilet',amount:9,date:'2025-06-01'},{id:102,desc:'Parquing Corte Ingles',amount:1.25,date:'2025-06-05'},{id:103,desc:'Gasoil (16/6)',amount:40,date:'2025-06-16'},{id:104,desc:'Gasoil (29/06)',amount:39.2,date:'2025-06-29'}],neteja:[{id:201,desc:'LuzMary (17/06)',amount:40,date:'2025-06-17'}],extres:[{id:301,desc:'El Bunquer',amount:61,date:'2025-06-10'},{id:302,desc:'La Jungla (15/06)',amount:60.9,date:'2025-06-15'},{id:303,desc:'Sopar Reus (08/06)',amount:51.2,date:'2025-06-08'},{id:304,desc:'Ferreteria Valls (28/06)',amount:20.2,date:'2025-06-28'},{id:305,desc:'Chino (26/06)',amount:34.48,date:'2025-06-26'},{id:306,desc:'LaTagliatella Reus',amount:47.47,date:'2025-06-22'},{id:307,desc:'Roslena Mercadal',amount:13.5,date:'2025-06-23'},{id:308,desc:'Parking Carrilet',amount:9,date:'2025-06-28'}]}},
-  6:{aida:900.703125,alex:1184.4,pct:0.35,base:{lloguer:820,parking:100,telefon:82.95,llum:54.63,gas:0,aigua:50.27,seguros:3.87,cuotes:0,impostos:0,altres:0},tickets:{compra:[{id:1,desc:'Carrefour Sant Cugat',amount:25.05,date:'2025-07-01'},{id:2,desc:'Market Sants (3/7)',amount:25.97,date:'2025-07-03'},{id:3,desc:'Paki Carrer Casa',amount:2,date:'2025-07-05'},{id:4,desc:'Lidl Badal',amount:35.96,date:'2025-07-08'},{id:5,desc:'Market Sants (9/7)',amount:47.17,date:'2025-07-09'},{id:6,desc:'Market Sants (22/7)',amount:50.04,date:'2025-07-22'},{id:7,desc:'Bon Preu (24/7)',amount:8.5,date:'2025-07-24'},{id:8,desc:'Market Sants (26/07)',amount:15.87,date:'2025-07-26'},{id:9,desc:'MaxiPa',amount:1.85,date:'2025-07-27'},{id:10,desc:'Market Sants (29/7)',amount:18.71,date:'2025-07-29'},{id:11,desc:'Market Sants (30/7)',amount:15.67,date:'2025-07-30'}],transport:[{id:101,desc:'Diposit Cotxe VilaSana',amount:53.2,date:'2025-07-05'},{id:102,desc:'Parquing Carrilet',amount:9,date:'2025-07-10'},{id:103,desc:'Diesel (27/7)',amount:40,date:'2025-07-27'},{id:104,desc:'Parking Tauli',amount:4.75,date:'2025-07-15'}],neteja:[{id:201,desc:'LuzMary',amount:40,date:'2025-07-01'},{id:202,desc:'LuzMary',amount:40,date:'2025-07-15'}],extres:[{id:301,desc:'KFC Sant Cugat',amount:20.49,date:'2025-07-01'},{id:302,desc:'Sumpu',amount:15,date:'2025-07-05'},{id:303,desc:'365 Post Canet',amount:11.05,date:'2025-07-10'},{id:304,desc:'Elim Home',amount:9.99,date:'2025-07-12'},{id:305,desc:'Canet',amount:79.5,date:'2025-07-15'},{id:306,desc:'Vermut Cambrils',amount:12.3,date:'2025-07-20'},{id:307,desc:'Llum Habitacio',amount:3.15,date:'2025-07-22'},{id:308,desc:'Farmacia Relec',amount:27.36,date:'2025-07-24'},{id:309,desc:'Botelles Vi',amount:29.34,date:'2025-07-26'},{id:310,desc:'Restaurant Terrassa',amount:47.3,date:'2025-07-28'},{id:311,desc:'Farmacia Relec',amount:10.95,date:'2025-07-29'},{id:312,desc:'Farmacia 2',amount:17.95,date:'2025-07-30'},{id:313,desc:'Farmacia 3',amount:24.6,date:'2025-07-31'}]}},
-  7:{aida:900.375,alex:1184.4,pct:0.35,base:{lloguer:820,parking:100,telefon:85.66,llum:60.88,gas:21.84,aigua:0,seguros:3.87,cuotes:0,impostos:0,altres:0},tickets:{compra:[{id:1,desc:'Market Sants',amount:34.3,date:'2025-08-10'},{id:2,desc:'Mercadona Sants',amount:6.4,date:'2025-08-15'},{id:3,desc:'Consum BCN',amount:7.25,date:'2025-08-20'}],transport:[{id:101,desc:'Carrilet Parking',amount:9,date:'2025-08-10'}],neteja:[],extres:[{id:301,desc:'Baticuore Reus',amount:29,date:'2025-08-10'},{id:302,desc:'Decathlon Hospi',amount:47.97,date:'2025-08-15'},{id:303,desc:'365 T1',amount:5.7,date:'2025-08-20'},{id:304,desc:'Aeroport T1',amount:8.98,date:'2025-08-20'}]}},
-  8:{aida:900.375,alex:1184.4,pct:0.35,base:{lloguer:820,parking:100,telefon:82.99,llum:41.53,gas:0,aigua:46.79,seguros:3.87,cuotes:0,impostos:0,altres:0},tickets:{compra:[{id:1,desc:'MaxiPa (2/9)',amount:1.65,date:'2025-09-02'},{id:2,desc:'Market Sants',amount:19.73,date:'2025-09-05'},{id:3,desc:'Market Sants (3/9)',amount:14.49,date:'2025-09-03'},{id:4,desc:'Lidl Esplugues',amount:135.58,date:'2025-09-07'},{id:5,desc:'Market Sants (10/9)',amount:22.44,date:'2025-09-10'},{id:6,desc:'Super Sants',amount:2.6,date:'2025-09-12'},{id:7,desc:'BonArea',amount:9.75,date:'2025-09-15'},{id:8,desc:'Carrefour (17/9)',amount:90.62,date:'2025-09-17'},{id:9,desc:'Market Sants (19/09)',amount:32.11,date:'2025-09-19'},{id:10,desc:'BonArea (26/09)',amount:12.95,date:'2025-09-26'},{id:11,desc:'Market Sants (26/09)',amount:32.65,date:'2025-09-26'}],transport:[{id:101,desc:'Diesel',amount:40,date:'2025-09-05'},{id:102,desc:'Parking Carrilet',amount:4.5,date:'2025-09-28'}],neteja:[{id:201,desc:'LuzMary (8/9)',amount:40,date:'2025-09-08'},{id:202,desc:'Luz Mary (25/9)',amount:40,date:'2025-09-25'}],extres:[{id:301,desc:'Taxi Aeroport',amount:32.35,date:'2025-09-01'},{id:302,desc:'LoveArt Cuadre',amount:124.99,date:'2025-09-10'},{id:303,desc:'Dinar Illa',amount:49.1,date:'2025-09-15'},{id:304,desc:'Dexeus Mujer',amount:59,date:'2025-09-18'},{id:305,desc:'Teatre Tivoli',amount:9,date:'2025-09-20'},{id:306,desc:'Restaurant H83',amount:47.5,date:'2025-09-22'},{id:307,desc:'Crispetes Teatre',amount:8.8,date:'2025-09-20'}]}},
-  9:{aida:900.375,alex:1184.4,pct:0.35,base:{lloguer:837.95,parking:100,telefon:82.99,llum:57.83,gas:19.06,aigua:0,seguros:3.87,cuotes:0,impostos:0,altres:0},tickets:{compra:[{id:1,desc:'Market Sants (05/10)',amount:40.75,date:'2025-10-05'},{id:2,desc:'Market Sants (07/10)',amount:37.92,date:'2025-10-07'},{id:3,desc:'BonArea (07/10)',amount:4.18,date:'2025-10-07'},{id:4,desc:'BonPreu',amount:7.69,date:'2025-10-08'},{id:5,desc:'365 Pa',amount:1.85,date:'2025-10-10'},{id:6,desc:'Bon Area (12/10)',amount:25.28,date:'2025-10-12'},{id:7,desc:'Market Sants (15/10)',amount:85.67,date:'2025-10-15'},{id:8,desc:'Farmacia (19/10)',amount:16.3,date:'2025-10-19'},{id:9,desc:'Market Sants (24/10)',amount:31.21,date:'2025-10-24'},{id:10,desc:'Bon Area (27/10)',amount:6.59,date:'2025-10-27'},{id:11,desc:'Carrefour Hospi (28/10)',amount:114.27,date:'2025-10-28'},{id:12,desc:'Farmacia (31/10)',amount:1.31,date:'2025-10-31'}],transport:[{id:101,desc:'Diesel (9/10)',amount:59.2,date:'2025-10-09'},{id:102,desc:'Diesel (18/10)',amount:40,date:'2025-10-18'},{id:103,desc:'Praking Carrilet',amount:4.5,date:'2025-10-15'},{id:104,desc:'Diesel (25/10)',amount:20,date:'2025-10-25'}],neteja:[],extres:[{id:301,desc:'Matxaca Burger',amount:73.6,date:'2025-10-10'},{id:302,desc:'Efectiu Teatre',amount:20,date:'2025-10-15'},{id:303,desc:'Beure Vinyols',amount:4,date:'2025-10-18'},{id:304,desc:'Aspiradora',amount:107.2,date:'2025-10-20'},{id:305,desc:'Burger King',amount:21.2,date:'2025-10-25'},{id:306,desc:'Birres',amount:4.5,date:'2025-10-28'}]}},
-  10:{aida:900.375,alex:1184.4,pct:0.35,base:{lloguer:820,parking:100,telefon:80.95,llum:0,gas:0,aigua:0,seguros:3.87,cuotes:0,impostos:0,altres:0},tickets:{compra:[{id:1,desc:'BonArea (05/11)',amount:15.37,date:'2025-11-05'},{id:2,desc:'Market Sants (05/11)',amount:33.37,date:'2025-11-05'}],transport:[{id:101,desc:'Parking Corte Ingles',amount:1.35,date:'2025-11-10'},{id:102,desc:'Parking Reus',amount:3.7,date:'2025-11-15'}],neteja:[],extres:[]}},
-  11:{aida:900.375,alex:1184.4,pct:0.35,base:{lloguer:820,parking:100,telefon:80.95,llum:0,gas:0,aigua:0,seguros:3.87,cuotes:0,impostos:0,altres:0},tickets:{compra:[],transport:[],neteja:[],extres:[]}}
+
+// Només Març té dades reals. La resta s'ompliran amb l'ús o es carreguen del Sheet.
+const MARC_DATA = {
+  aida:1738,alex:2457,pct:0.60,
+  base:{lloguer:279.45,telefon:0,llum:0,gas:0,aigua:0,seguros:136.08,cuotes:0,impostos:0,altres:0},
+  tickets:{
+    compra:[{id:1,desc:'Lidl Salou',amount:99.87,date:'2025-03-01'},{id:2,desc:'BonArea',amount:33.39,date:'2025-03-01'},{id:3,desc:'Lidl Vinyols (10/3)',amount:57.44,date:'2025-03-10'},{id:4,desc:'Esclat (10/3)',amount:25.24,date:'2025-03-10'},{id:5,desc:'Dia Reus',amount:4.42,date:'2025-03-12'},{id:6,desc:'Pa Vinyols',amount:0.95,date:'2025-03-15'},{id:7,desc:'Embotit BonArea',amount:16.97,date:'2025-03-18'}],
+    transport:[{id:101,desc:'Gasolina (1/3)',amount:35,date:'2025-03-01'},{id:102,desc:'Gasolina (4/3)',amount:38.15,date:'2025-03-04'},{id:103,desc:'Gasolina (6/3)',amount:30,date:'2025-03-06'},{id:104,desc:'Gasolina (11/3)',amount:38.20,date:'2025-03-11'},{id:105,desc:'Gasolina (15/3)',amount:38.36,date:'2025-03-15'},{id:106,desc:'Parking Corte Ingles',amount:2.45,date:'2025-03-16'},{id:107,desc:'Gasolina(18/3)',amount:38.39,date:'2025-03-18'},{id:108,desc:'Gasolina (20/3)',amount:39.78,date:'2025-03-20'}],
+    neteja:[],
+    extres:[{id:301,desc:'Basures',amount:30,date:'2025-03-01'},{id:302,desc:'Pizzeria Vinyols',amount:39.5,date:'2025-03-05'},{id:303,desc:'Seguro Antic',amount:3.87,date:'2025-03-07'},{id:304,desc:'Compra escobilles',amount:24.95,date:'2025-03-10'},{id:305,desc:'Orange Tancament',amount:82.99,date:'2025-03-12'},{id:306,desc:'Beep Reus',amount:61.98,date:'2025-03-15'},{id:307,desc:'Aigua BCN',amount:59.74,date:'2025-03-18'},{id:308,desc:'Ikea Dinar',amount:18.94,date:'2025-03-22'},{id:309,desc:'Ikea Compra',amount:295.1,date:'2025-03-22'},{id:310,desc:'Amazon',amount:49.47,date:'2025-03-24'},{id:311,desc:'Chino TGN',amount:3.75,date:'2025-03-25'},{id:312,desc:'El Corte Ingles',amount:25.15,date:'2025-03-26'},{id:313,desc:'Amazon (26/2)',amount:265,date:'2025-03-26'},{id:314,desc:'Endesa Tancament',amount:19.89,date:'2025-03-28'},{id:315,desc:'Endesa Tancament',amount:38.53,date:'2025-03-28'},{id:316,desc:'Beep Reus',amount:16.95,date:'2025-03-30'}]
+  }
 };
+
+function emptyMonth() {
+  const b={};FIXES_BASE.forEach(f=>b[f.id]=0);b.lloguer=820;b.telefon=82.95;b.seguros=3.87;
+  return {aida:0,alex:0,pct:0.35,base:b,tickets:{compra:[],transport:[],neteja:[],extres:[]}};
+}
 
 let currentMonth=new Date().getMonth();
 function key(m){return`vy2_m${m}`}
-function loadM(m){const r=localStorage.getItem(key(m));if(r)return JSON.parse(r);const e=EXCEL[m];if(e)return JSON.parse(JSON.stringify(e));const b={};FIXES_BASE.forEach(f=>b[f.id]=0);b.lloguer=820;b.telefon=82.95;b.seguros=3.87;return{aida:900,alex:1184,pct:0.35,base:b,tickets:{compra:[],transport:[],neteja:[],extres:[]}}}
+function loadM(m){
+  const r=localStorage.getItem(key(m));
+  if(r) return JSON.parse(r);
+  if(m===2) return JSON.parse(JSON.stringify(MARC_DATA)); // Març
+  return emptyMonth();
+}
 function saveM(m,d){localStorage.setItem(key(m),JSON.stringify(d));syncToSheets();}
 
 // ── GOOGLE SHEETS SYNC ───────────────────────────────────────────────────────
 // ⚠️ CANVIA AIXÒ per la teva URL de Apps Script un cop desplegat:
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxJQ9QGFJQQ_JtojYQQOVJqK5GzB49X6YcZeARUK-TODhOmf8cai6g4lyvxW0m8tugTxA/exec';
+const SCRIPT_URL = 'POSA_AQUI_LA_TEVA_URL';
 const SECRET = 'Vinyols2025';
 
 let syncTimer = null;
 let syncStatus = 'idle';
 
 function syncToSheets() {
-  if (SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbxJQ9QGFJQQ_JtojYQQOVJqK5GzB49X6YcZeARUK-TODhOmf8cai6g4lyvxW0m8tugTxA/exec') return;
+  if (SCRIPT_URL === 'POSA_AQUI_LA_TEVA_URL') return;
   clearTimeout(syncTimer);
   syncTimer = setTimeout(doSync, 2000);
 }
@@ -346,22 +354,27 @@ async function doSync() {
   }
 }
 
-async function loadFromSheets() {
-  if (SCRIPT_URL === 'https://script.google.com/macros/s/AKfycbxJQ9QGFJQQ_JtojYQQOVJqK5GzB49X6YcZeARUK-TODhOmf8cai6g4lyvxW0m8tugTxA/exec') return;
+async function loadFromSheets(manual=true) {
+  if (SCRIPT_URL === 'POSA_AQUI_LA_TEVA_URL') return;
   setSyncStatus('syncing');
   try {
     const url = `${SCRIPT_URL}?action=load&secret=${SECRET}`;
     const res = await fetch(url);
     const allData = await res.json();
-    if (allData && !allData.error) {
+    if (allData && !allData.error && Object.keys(allData).length > 0) {
       Object.entries(allData).forEach(([m, d]) => {
         localStorage.setItem(key(parseInt(m)), JSON.stringify(d));
       });
       render();
       setSyncStatus('ok');
+      if (manual) alert('✅ Dades carregades del Google Sheet!');
+    } else {
+      setSyncStatus('ok');
+      if (manual) alert('ℹ️ El Sheet està buit. Les dades locals es mantenen.');
     }
   } catch (err) {
     setSyncStatus('error');
+    if (manual) alert('⚠️ No s\'ha pogut connectar amb el Sheet. Comprova la connexió.');
   }
 }
 
@@ -538,6 +551,8 @@ function enterApp(hidden) {
 }
 
 render();
+// Carrega silenciosament del Sheet en iniciar (si ja té URL configurada)
+loadFromSheets(false);
 // Inicialitza data a la pantalla d'entrada
 const _now=new Date();
 const _dies=['Diumenge','Dilluns','Dimarts','Dimecres','Dijous','Divendres','Dissabte'];
@@ -549,4 +564,3 @@ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
 </script>
 </body>
 </html>
-
